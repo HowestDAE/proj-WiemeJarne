@@ -12,7 +12,16 @@ namespace Project.Model
         [JsonProperty(PropertyName = "title")]
         public string Title { get; set; }
 
-        [JsonProperty(PropertyName ="deals")]
-        public string[] DealIds { get; set; }
+        [JsonProperty(PropertyName = "thumb")]
+        public string ImageUrl { get; set; }
+
+        [JsonProperty(PropertyName = "isActive")]
+        public Deal[] Deals { get; set; }
+
+        [JsonIgnore]
+        public int ReleaseDate { get; set; } //in unix timestamp format
+
+        [JsonIgnore]
+        public string Publisher { get; set; }
     }
 }
