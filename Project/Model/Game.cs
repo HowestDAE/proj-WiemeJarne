@@ -16,6 +16,6 @@ namespace Project.Model
         public string ImageUrl { get; set; }
 
         [JsonProperty(PropertyName = "deals")]
-        public Deal[] Deals { get; set; }
+        public List<Deal> Deals { get; set; }
     }
 }
