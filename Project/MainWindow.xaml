@@ -12,5 +12,6 @@
     </Window.DataContext>
     <Grid>
         <Frame NavigationUIVisibility="Hidden" Content="{Binding CurrentPage}"/>
+        <Button VerticalAlignment="Bottom" Command="{Binding SwitchPageCommand}" Content="{Binding CommandText}"/>
     </Grid>
 </Window>

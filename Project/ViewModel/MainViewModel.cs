@@ -1,4 +1,5 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
 using Project.Model;
 using Project.Repository;
 using Project.View;
@@ -13,6 +14,19 @@ namespace Project.ViewModel
 {
     public class MainViewModel : ObservableObject
     {
+        public string CommandText
+        {
+            get
+            {
+                if (CurrentPage is OverviewPage)
+                    return "SHOW DEALS";
+
+                return "BACK";
+            }
+        }
+
+        public RelayCommand SwitchPageCommand {  get; private set; }
+
         public Page CurrentPage { get; set; }
 
         public OverviewPage OverviewPage { get; }
@@ -24,6 +38,27 @@ namespace Project.ViewModel
         public MainViewModel()
         {
             CurrentPage = OverviewPage;
+            SwitchPageCommand = new RelayCommand(SwitchPage);
+        }
+
+        public void SwitchPage()
+        {
+            if(CurrentPage is OverviewPage)
+            {
+                Game selectedGame = (OverviewPage.DataContext as OverviewVM).SelectedGame;
+                if (selectedGame == null) return;
+                
+                (DetailPage.DataContext as DetailVM).CurrentGame = selectedGame;
+
+                CurrentPage = DetailPage;
+            }
+            else
+            {
+                CurrentPage = OverviewPage;
+            }
+
+            OnPropertyChanged(nameof(CurrentPage));
+            OnPropertyChanged(nameof(CommandText));
         }
     }
 }

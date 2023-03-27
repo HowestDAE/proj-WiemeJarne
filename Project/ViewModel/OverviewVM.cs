@@ -1,16 +1,19 @@
 ﻿using Project.Model;
 using Project.Repository;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Project.ViewModel
 {
     public class OverviewVM
     {
         public List<Game> Games { get; set; }
+
+        private Game _selectedGame;
+        public Game SelectedGame
+        {
+            get { return _selectedGame; }
+            set { _selectedGame = value; }
+        }
 
         public OverviewVM()
         {

@@ -5,6 +5,7 @@
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:Project.View"
       xmlns:viewModel="clr-namespace:Project.ViewModel"
+      xmlns:conv="clr-namespace:Project.View.Converters"
       mc:Ignorable="d" 
       d:DesignHeight="450" d:DesignWidth="800"
       Title="DetailPage">
@@ -13,6 +14,10 @@
         <viewModel:DetailVM/>
     </Page.DataContext>
 
+    <Page.Resources>
+        <conv:StoreIdToStringConverter x:Key="StoreIdToString"/>
+    </Page.Resources>
+
     <Grid Background="#414855">
         
         <Grid.RowDefinitions>
@@ -20,16 +25,22 @@
             <RowDefinition Height="*"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
-        
-        <Image Grid.Row="1" Source="{Binding CurrentGame.ImageUrl}" Stretch="Uniform"/>
 
-        <Viewbox Grid.Row="0">
-            <TextBlock Text="{Binding CurrentGame.Title}" Foreground="#b0b8c5" TextAlignment="Center" TextWrapping="Wrap" FontWeight="DemiBold"/>
-        </Viewbox>       
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
 
-        <Border Grid.Row="2" Background="#24282f" CornerRadius="5" Height="auto" Width="auto" Margin="20"/>
+        <Image Grid.Row="1" Grid.Column="1" Source="{Binding CurrentGame.ImageUrl}" Stretch="Uniform"/>
 
-        <ListBox Grid.Row="2" ItemsSource="{Binding CurrentGame.Deals}" ScrollViewer.VerticalScrollBarVisibility="Disabled" Background="#24282f" Margin="30" BorderBrush="Transparent" Width="auto" Height="auto" FontStretch="Expanded">
+        <Viewbox Grid.Row="0" Grid.ColumnSpan="3">
+            <TextBlock Text="{Binding CurrentGame.Title}" Foreground="#b0b8c5" TextAlignment="Center" TextWrapping="Wrap" FontWeight="DemiBold" Margin="5,0,5,0"/>
+        </Viewbox>
+
+        <Border Grid.Row="2" Grid.ColumnSpan="3" Background="#24282f" CornerRadius="5" Height="auto" Width="auto" Margin="20"/>
+
+        <ListBox Grid.Row="2" Grid.ColumnSpan="3" ItemsSource="{Binding CurrentGame.Deals}" ScrollViewer.VerticalScrollBarVisibility="Disabled" Background="#24282f" Margin="30" BorderBrush="Transparent" Width="auto" Height="auto" FontStretch="Expanded">
             <ListBox.ItemsPanel>
                 <ItemsPanelTemplate>
                     <WrapPanel Orientation="Horizontal" Width="auto"/>
@@ -46,7 +57,8 @@
                                 <RowDefinition Height="auto"/>
                                 <RowDefinition Height="auto"/>
                             </Grid.RowDefinitions>
-                            <TextBlock Text="{Binding StoreId}" Grid.ColumnSpan="2" Foreground="#b0b8c5" TextAlignment="Center"/>
+
+                            <TextBlock Text="{Binding StoreId, Converter={StaticResource StoreIdToString}}" Grid.ColumnSpan="2" Foreground="#b0b8c5" TextAlignment="Center"/>
                             <TextBlock Grid.Row="1" Foreground="#b0b8c5">
                             <Run Text="normal price: "/>
                             <Run Text="{Binding NormalPrice}"/>
@@ -60,15 +72,18 @@
                             <Run Text="{Binding SavingPercentage}"/>
                             <Run Text="%"/>
                             </TextBlock>
-                            <TextBlock Grid.Row="4" Text="click here" Foreground="#b0b8c5" Grid.ColumnSpan="2" TextAlignment="Center">
-                            <Hyperlink NavigateUri="{Binding DealId}"/>  <!--TODO: add converter from dealId to link-->
-                            </TextBlock>
                         </Grid>
                     </Viewbox>
                     
                 </DataTemplate>
             </ListBox.ItemTemplate>
         </ListBox>
+
+        <Viewbox Grid.Row="1">
+            <Button HorizontalAlignment="Center" Margin="30, 0, 30, 0">
+                <TextBlock Text="go to selected deal" Margin="5,0,5,0"/>
+            </Button>
+        </Viewbox>
         
     </Grid>
 </Page>
