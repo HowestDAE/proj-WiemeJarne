@@ -1,0 +1,74 @@
+﻿<Page x:Class="Project.View.DetailPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:Project.View"
+      xmlns:viewModel="clr-namespace:Project.ViewModel"
+      mc:Ignorable="d" 
+      d:DesignHeight="450" d:DesignWidth="800"
+      Title="DetailPage">
+
+    <Page.DataContext>
+        <viewModel:DetailVM/>
+    </Page.DataContext>
+
+    <Grid Background="#414855">
+        
+        <Grid.RowDefinitions>
+            <RowDefinition Height="0.5*"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        
+        <Image Grid.Row="1" Source="{Binding CurrentGame.ImageUrl}" Stretch="Uniform"/>
+
+        <Viewbox Grid.Row="0">
+            <TextBlock Text="{Binding CurrentGame.Title}" Foreground="#b0b8c5" TextAlignment="Center" TextWrapping="Wrap" FontWeight="DemiBold"/>
+        </Viewbox>       
+
+        <Border Grid.Row="2" Background="#24282f" CornerRadius="5" Height="auto" Width="auto" Margin="20"/>
+
+        <ListBox Grid.Row="2" ItemsSource="{Binding CurrentGame.Deals}" ScrollViewer.VerticalScrollBarVisibility="Disabled" Background="#24282f" Margin="30" BorderBrush="Transparent" Width="auto" Height="auto" FontStretch="Expanded">
+            <ListBox.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <WrapPanel Orientation="Horizontal" Width="auto"/>
+                </ItemsPanelTemplate>
+            </ListBox.ItemsPanel>
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                    <Viewbox>
+                        <Grid Width="auto" Height="auto">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="auto"/>
+                                <RowDefinition Height="auto"/>
+                                <RowDefinition Height="auto"/>
+                                <RowDefinition Height="auto"/>
+                                <RowDefinition Height="auto"/>
+                            </Grid.RowDefinitions>
+                            <TextBlock Text="{Binding StoreId}" Grid.ColumnSpan="2" Foreground="#b0b8c5" TextAlignment="Center"/>
+                            <TextBlock Grid.Row="1" Foreground="#b0b8c5">
+                            <Run Text="normal price: "/>
+                            <Run Text="{Binding NormalPrice}"/>
+                            </TextBlock>
+                            <TextBlock Grid.Row="2" Foreground="#b0b8c5">
+                            <Run Text="sale price: "/>
+                            <Run Text="{Binding SalePrice}"/>
+                            </TextBlock>
+                            <TextBlock Grid.Row="3" Foreground="#b0b8c5">
+                            <Run Text="you save:"/>
+                            <Run Text="{Binding SavingPercentage}"/>
+                            <Run Text="%"/>
+                            </TextBlock>
+                            <TextBlock Grid.Row="4" Text="click here" Foreground="#b0b8c5" Grid.ColumnSpan="2" TextAlignment="Center">
+                            <Hyperlink NavigateUri="{Binding DealId}"/>  <!--TODO: add converter from dealId to link-->
+                            </TextBlock>
+                        </Grid>
+                    </Viewbox>
+                    
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
+        
+    </Grid>
+</Page>

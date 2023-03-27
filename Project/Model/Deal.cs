@@ -12,6 +12,9 @@ namespace Project.Model
         [JsonProperty(PropertyName = "storeID")]
         public string StoreId { get; set; }
 
+        [JsonProperty(PropertyName = "dealID")]
+        public string DealId { get; set; }
+
         [JsonProperty(PropertyName = "price")]
         public float SalePrice { get; set; }
 

@@ -17,6 +17,9 @@ namespace Project.ViewModel
 
         public OverviewPage OverviewPage { get; }
         = new OverviewPage();
+
+        public DetailPage DetailPage { get; }
+        = new DetailPage();
          
         public MainViewModel()
         {
