@@ -12,25 +12,13 @@ namespace Project.Model
         [JsonProperty(PropertyName = "storeID")]
         public string StoreId { get; set; }
 
-        [JsonProperty(PropertyName = "savings")]
-        public float SavingPercentage { get; set; }
-
-        [JsonProperty(PropertyName = "salePrice")]
+        [JsonProperty(PropertyName = "price")]
         public float SalePrice { get; set; }
 
-        [JsonProperty(PropertyName = "normalPrice")]
+        [JsonProperty(PropertyName = "retailPrice")]
         public float NormalPrice { get; set; }
 
-        [JsonProperty(PropertyName = "steamRatingText")]
-        public string SteamRatingText { get; set; }
-
-        [JsonProperty(PropertyName = "steamRatingPercent")]
-        public string SteamRatingPercent { get; set; }
-
-        [JsonProperty(PropertyName = "steamRatingCount")]
-        public string SteamReviewCount { get; set; }
-
-        [JsonProperty(PropertyName = "releaseDate")]
-        public int MetaCriticScore { get; set; }
+        [JsonProperty(PropertyName = "savings")]
+        public float SavingPercentage { get; set; }
     }
 }
