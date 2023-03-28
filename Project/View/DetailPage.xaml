@@ -44,7 +44,7 @@
         <!--Border for around the list of deals this is to have rounded conrners-->
         <Border Grid.Row="2" Grid.ColumnSpan="3" Background="#414855" CornerRadius="10" Margin="10">
             <!--ListBox with the deals inside-->
-            <ListBox Grid.Row="2" Grid.ColumnSpan="3" ItemsSource="{Binding CurrentGame.Deals}" ScrollViewer.VerticalScrollBarVisibility="Disabled" Background="#414855" Margin="10" BorderBrush="Transparent" Width="auto" Height="auto" FontStretch="Expanded">
+            <ListBox Grid.Row="2" Grid.ColumnSpan="3" ItemsSource="{Binding CurrentGame.Deals}" SelectedItem="{Binding SelectedDeal}" ScrollViewer.VerticalScrollBarVisibility="Disabled" Background="#414855" Margin="10" BorderBrush="Transparent" Width="auto" Height="auto" FontStretch="Expanded">
                 <ListBox.ItemsPanel>
                     <ItemsPanelTemplate>
                         <!-- this is a WrapPanel because the scroll is smoother then if it was a stackPanel-->
@@ -57,7 +57,6 @@
                         <Viewbox>
                             <Grid Width="auto" Height="auto">
                                 <Grid.RowDefinitions>
-                                    <RowDefinition Height="auto"/>
                                     <RowDefinition Height="auto"/>
                                     <RowDefinition Height="auto"/>
                                     <RowDefinition Height="auto"/>
@@ -87,12 +86,6 @@
                                     <Run Text="{Binding SavingPercentage}"/>
                                     <Run Text="%"/>
                                 </TextBlock>
-
-                                <!--TextBlock that shows if the store is active or not-->
-                                <TextBlock Grid.Row="4" Foreground="#b0b8c5">
-                                    <Run Text="store activity:"/>
-                                    <Run Text="{Binding StoreId, Converter={StaticResource StoreIdToActivity}}"/>
-                                </TextBlock>
                             </Grid>
                         </Viewbox>
                     </DataTemplate>
@@ -102,8 +95,8 @@
         <!-- ViewBox so the button inside it sizes according to the window size-->
         <Viewbox Grid.Row="1">
             <!--when this button is clicked an there is a deal selected then the default browser will open en go the deal-->
-            <Button HorizontalAlignment="Center" Margin="30, 0, 30, 0" Background="#414855" BorderBrush="#b0b8c5">
-                <TextBlock Text="go to selected deal" Margin="5,0,5,0" Foreground="#b0b8c5"/>
+            <Button Command="{Binding BrowseToSelectedDealCommand}" HorizontalAlignment="Center" Margin="30, 0, 30, 0" Background="#414855" BorderBrush="#b0b8c5">
+                <TextBlock Text="browse to selected deal" Margin="5,0,5,0" Foreground="#b0b8c5"/>
             </Button>
         </Viewbox>
 
@@ -126,7 +119,7 @@
         <!-- ViewBox so the button inside it sizes according to the window size-->
         <Viewbox Grid.Row="1" Grid.Column="2" VerticalAlignment="Bottom" HorizontalAlignment="Center">
             <!--when this button is clicked an alert will be will be set for the entered email address (if that email is valid) and for the to reach price-->
-            <Button Margin="30, 0, 30, 20" Background="#414855" BorderBrush="#b0b8c5">
+            <Button Command="{Binding SetAlertCommand}" Margin="30, 0, 30, 20" Background="#414855" BorderBrush="#b0b8c5">
                 <TextBlock Text="set alert for selected deal" Margin="5,0,5,0" Foreground="#b0b8c5"/>
             </Button>
         </Viewbox>

@@ -3,6 +3,7 @@ using CommunityToolkit.Mvvm.Input;
 using Project.Model;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -112,6 +113,7 @@ namespace Project.ViewModel
         }
 
         private string _priceToReach = "(enter price to reach here)";
+
         public string PriceToReach
         {
             get { return _priceToReach; }
@@ -122,11 +124,27 @@ namespace Project.ViewModel
             }
         }
 
+        public RelayCommand BrowseToSelectedDealCommand { get; private set; }
         public RelayCommand SetAlertCommand { get; private set; }
+
+
+        private Deal _selectedDeal;
+        public Deal SelectedDeal
+        {
+            get { return _selectedDeal; }
+            set { _selectedDeal = value; }
+        }
 
         public DetailVM()
         {
+            BrowseToSelectedDealCommand = new RelayCommand(BrowseToSelectedDeal);
             SetAlertCommand = new RelayCommand(SetAlert);
+        }
+
+        public void BrowseToSelectedDeal()
+        {
+            string url = $"https://www.cheapshark.com/redirect?dealID={SelectedDeal.DealId}";
+            Process.Start(url);
         }
 
         public void SetAlert() //this function will only work when the api is in use
