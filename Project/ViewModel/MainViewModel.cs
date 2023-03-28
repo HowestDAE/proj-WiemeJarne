@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Controls;
 
 namespace Project.ViewModel
@@ -25,7 +26,7 @@ namespace Project.ViewModel
             }
         }
 
-        public RelayCommand SwitchPageCommand {  get; private set; }
+        public RelayCommand SwitchPageCommand { get; private set; }
 
         public Page CurrentPage { get; set; }
 
@@ -34,7 +35,6 @@ namespace Project.ViewModel
 
         public DetailPage DetailPage { get; }
         = new DetailPage();
-         
         public MainViewModel()
         {
             CurrentPage = OverviewPage;
@@ -43,11 +43,11 @@ namespace Project.ViewModel
 
         public void SwitchPage()
         {
-            if(CurrentPage is OverviewPage)
+            if (CurrentPage is OverviewPage)
             {
                 Game selectedGame = (OverviewPage.DataContext as OverviewVM).SelectedGame;
                 if (selectedGame == null) return;
-                
+
                 (DetailPage.DataContext as DetailVM).CurrentGame = selectedGame;
 
                 CurrentPage = DetailPage;

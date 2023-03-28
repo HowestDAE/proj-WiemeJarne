@@ -13,7 +13,7 @@
         <viewModel:OverviewVM/>
     </Page.DataContext>
     
-    <ListBox ItemsSource="{Binding Games}" ScrollViewer.HorizontalScrollBarVisibility="Disabled"  Background="#24282f" SelectedItem="{Binding SelectedGame}" HorizontalAlignment="Center" BorderBrush="Transparent">
+    <ListBox ItemsSource="{Binding Games}" ScrollViewer.HorizontalScrollBarVisibility="Disabled"  Background="#24282f" SelectedItem="{Binding SelectedGame}" HorizontalAlignment="Center" BorderBrush="Transparent" Margin="0,0,0,25">
         <ListBox.ItemsPanel>
             <ItemsPanelTemplate>
                 <WrapPanel Orientation="Horizontal" Width="auto"/>

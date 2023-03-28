@@ -7,6 +7,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Input;
 
 namespace Project.ViewModel
 {
@@ -126,7 +127,6 @@ namespace Project.ViewModel
 
         public RelayCommand BrowseToSelectedDealCommand { get; private set; }
         public RelayCommand SetAlertCommand { get; private set; }
-
 
         private Deal _selectedDeal;
         public Deal SelectedDeal
