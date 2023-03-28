@@ -1,4 +1,5 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
 using Project.Model;
 using System;
 using System.Collections.Generic;
@@ -89,7 +90,6 @@ namespace Project.ViewModel
                     }
                 }
             };
-
         public Game CurrentGame
         {
             get { return _currentGame; }
@@ -98,6 +98,40 @@ namespace Project.ViewModel
                 _currentGame = value;
                 OnPropertyChanged(nameof(CurrentGame));
             }
+        }
+
+        private string _userEmail = "(enter email here)";
+        public string UserEmail
+        {
+            get { return _userEmail; }
+            set
+            {
+                _userEmail = value;
+                OnPropertyChanged(nameof(UserEmail));
+            }
+        }
+
+        private string _priceToReach = "(enter price to reach here)";
+        public string PriceToReach
+        {
+            get { return _priceToReach; }
+            set
+            {
+                _priceToReach = value;
+                OnPropertyChanged(nameof(PriceToReach));
+            }
+        }
+
+        public RelayCommand SetAlertCommand { get; private set; }
+
+        public DetailVM()
+        {
+            SetAlertCommand = new RelayCommand(SetAlert);
+        }
+
+        public void SetAlert() //this function will only work when the api is in use
+        {
+
         }
     }
 }
