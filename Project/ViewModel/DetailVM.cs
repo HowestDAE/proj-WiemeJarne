@@ -1,6 +1,7 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Project.Model;
+using Project.Repository;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -92,6 +93,7 @@ namespace Project.ViewModel
                     }
                 }
             };
+
         public Game CurrentGame
         {
             get { return _currentGame; }
@@ -114,7 +116,6 @@ namespace Project.ViewModel
         }
 
         private string _priceToReach = "(enter price to reach here)";
-
         public string PriceToReach
         {
             get { return _priceToReach; }
@@ -132,13 +133,76 @@ namespace Project.ViewModel
         public Deal SelectedDeal
         {
             get { return _selectedDeal; }
-            set { _selectedDeal = value; }
+            set
+            {
+                _selectedDeal = value;
+            }
         }
 
+        private string _selectedStoreName;
+
+        public string SelectedStoreName
+        {
+            get { return _selectedStoreName; }
+            set
+            {
+                _selectedStoreName = value;
+                CalculateShowingDeals();                
+            }
+        }
+
+        public List<string> StoreNames { get; private set; }
+        public List<Store> Stores { get; private set; }
+
+
+        private List<Deal> _showingDeals;
+        public List<Deal> ShowingDeals
+        {
+            get { return _showingDeals; }
+            set
+            {
+                _showingDeals = value;
+                OnPropertyChanged(nameof(ShowingDeals));
+            }
+        }
         public DetailVM()
         {
             BrowseToSelectedDealCommand = new RelayCommand(BrowseToSelectedDeal);
             SetAlertCommand = new RelayCommand(SetAlert);
+            Stores = LocalGameRepository.GetStores();
+            StoreNames = LocalGameRepository.GetStoreNames();
+        }
+
+        public void CalculateShowingDeals()
+        {
+            if (SelectedStoreName.Equals("<all stores>"))
+            {
+                ShowingDeals = CurrentGame.Deals;
+                return;
+            }
+
+            List<Deal> showingDeals = new List<Deal>();
+            //determine the store index of the SelectedStoreName
+            string selectedStoreId = "";
+            foreach (var store in Stores)
+            {
+                if (store.Name.Equals(SelectedStoreName))
+                {
+                    selectedStoreId = store.Id;
+                    break;
+                }
+            }
+
+            if (selectedStoreId.Equals(""))
+                return;
+
+            foreach (var deal in CurrentGame.Deals)
+            {
+                if (deal.StoreId.Equals(selectedStoreId))
+                    showingDeals.Add(deal);
+            }
+
+            ShowingDeals = showingDeals;
         }
 
         public void BrowseToSelectedDeal()

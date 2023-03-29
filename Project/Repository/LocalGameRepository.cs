@@ -4,9 +4,11 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Automation.Peers;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using Project.Model;
+using Project.View.Converters;
 
 namespace Project.Repository
 {
@@ -46,6 +48,27 @@ namespace Project.Repository
             return _games;
         }
 
+        public static List<Game> GetGames(string storeId)
+        {
+            if (storeId.Equals("-1"))
+                return GetGames();
+
+            List<Game> gamesByStore = new List<Game>();
+
+            //loop over all the games
+            foreach(Game game in _games)
+            {
+                //loop over all the deal in from the games and if the game has a deal with the given storeName add it to the _gamesByStore list
+                foreach(Deal deal in game.Deals)
+                {
+                    if (deal.StoreId.Equals(storeId))
+                        gamesByStore.Add(game);
+                }
+            }
+
+            return gamesByStore;
+        }
+
         private static List<Store> _stores;
         public static List<Store> GetStores()
         {
@@ -67,10 +90,12 @@ namespace Project.Repository
 
                     foreach (var item in obj)
                     {
+                        if (!item.SelectToken("isActive").ToObject<bool>())
+                            continue;
+
                         Store store = new Store();
                         store.Id = item.SelectToken("storeID").ToString();
                         store.Name = item.SelectToken("storeName").ToString();
-                        store.IsActive = item.SelectToken("isActive").ToObject<bool>();
                         var images = item.SelectToken("images");
                         store.BannerUrl = images.SelectToken("banner").ToString();
                         store.LogoUrl = images.SelectToken("logo").ToString();
@@ -83,9 +108,18 @@ namespace Project.Repository
             return _stores;
         }
 
-        public LocalGameRepository()
+        public static List<string> GetStoreNames()
         {
-            GetGames();
+            List<string>storeNames = new List<string>();
+
+            if (_stores == null) return storeNames;
+
+            foreach (var item in _stores)
+            {
+                storeNames.Add(item.Name);
+            }
+
+            return storeNames;
         }
     }
 }

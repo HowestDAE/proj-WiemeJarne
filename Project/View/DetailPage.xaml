@@ -43,7 +43,7 @@
         <!--Border for around the list of deals this is to have rounded conrners-->
         <Border Grid.Row="2" Grid.ColumnSpan="3" Background="#414855" CornerRadius="10" Margin="10">
             <!--ListBox with the deals inside-->
-            <ListBox Grid.Row="2" Grid.ColumnSpan="3" ItemsSource="{Binding CurrentGame.Deals}" SelectedItem="{Binding SelectedDeal}" ScrollViewer.VerticalScrollBarVisibility="Disabled" Background="#414855" Margin="10" BorderBrush="Transparent" Width="auto" Height="auto" FontStretch="Expanded">
+            <ListBox Grid.Row="2" Grid.ColumnSpan="3" ItemsSource="{Binding ShowingDeals}" SelectedItem="{Binding SelectedDeal}" ScrollViewer.VerticalScrollBarVisibility="Disabled" Background="#414855" Margin="10" BorderBrush="Transparent" Width="auto" Height="auto" FontStretch="Expanded">
                 <ListBox.ItemsPanel>
                     <ItemsPanelTemplate>
                         <!-- this is a WrapPanel because the scroll is smoother then if it was a stackPanel-->

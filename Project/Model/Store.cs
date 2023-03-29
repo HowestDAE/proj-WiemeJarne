@@ -12,11 +12,8 @@ namespace Project.Model
         [JsonProperty(PropertyName = "storeID")]
         public string Id { get; set; }
 
-        [JsonProperty(PropertyName = "steam")]
+        [JsonProperty(PropertyName = "storeName")]
         public string Name { get; set; }
-
-        [JsonProperty(PropertyName = "isActive")]
-        public bool IsActive { get; set; }
 
         [JsonProperty(PropertyName = "banner")]
         public string BannerUrl { get; set; }

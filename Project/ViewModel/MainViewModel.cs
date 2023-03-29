@@ -48,7 +48,11 @@ namespace Project.ViewModel
                 Game selectedGame = (OverviewPage.DataContext as OverviewVM).SelectedGame;
                 if (selectedGame == null) return;
 
+                string selectedStoreName = (OverviewPage.DataContext as OverviewVM).SelectedStoreName;
+                if (selectedStoreName == null) return;
+
                 (DetailPage.DataContext as DetailVM).CurrentGame = selectedGame;
+                (DetailPage.DataContext as DetailVM).SelectedStoreName = selectedStoreName;
 
                 CurrentPage = DetailPage;
             }
