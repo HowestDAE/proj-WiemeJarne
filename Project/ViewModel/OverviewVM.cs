@@ -82,7 +82,7 @@ namespace Project.ViewModel
         {
             Games = LocalGameRepository.GetGames();
             Stores = LocalGameRepository.GetStores();
-            Stores.Add(new Store() { Name = "<all stores>", Id = "" });
+            Stores.Add(new Store() { Name = "<all stores>", Id = "-1" });
             SelectedStore = Stores.Last();
             SelectedComparisonOperator = ComparisonOperators[0];
             SelectedComparisonType = Types[0];

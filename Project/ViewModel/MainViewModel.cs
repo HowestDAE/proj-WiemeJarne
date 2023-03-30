@@ -56,21 +56,8 @@ namespace Project.ViewModel
                 Store selectedStore = (OverviewPage.DataContext as OverviewVM).SelectedStore;
                 if (selectedStore == null) return;
 
-                
-
-                string selectedComparisonOperator = (OverviewPage.DataContext as OverviewVM).SelectedComparisonOperator;
-                if (selectedComparisonOperator == null) return;
-
-                string selectedComparisonType = (OverviewPage.DataContext as OverviewVM).SelectedComparisonType;
-                if (selectedComparisonType == null) return;
-
-                float givenToCompareNumber = (OverviewPage.DataContext as OverviewVM).GivenToCompareNumber;
-
                 (DetailPage.DataContext as DetailVM).CurrentGame = selectedGame;
                 (DetailPage.DataContext as DetailVM).SelectedStore = selectedStore;
-                (DetailPage.DataContext as DetailVM).SelectedComparisonOperator = selectedComparisonOperator;
-                (DetailPage.DataContext as DetailVM).SelectedComparisonType = selectedComparisonType;
-                (DetailPage.DataContext as DetailVM).GivenToCompareNumber = givenToCompareNumber;
 
                 CurrentPage = DetailPage;
                 IsSearchButtonVisible = Visibility.Hidden;
