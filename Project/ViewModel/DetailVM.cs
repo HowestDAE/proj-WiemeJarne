@@ -139,21 +139,52 @@ namespace Project.ViewModel
             }
         }
 
-        private string _selectedStoreName;
+        public List<Store> Stores { get; private set; }
 
+        public List<string> StoreNames { get; private set; }
+        private string _selectedStoreName;
         public string SelectedStoreName
         {
             get { return _selectedStoreName; }
             set
             {
                 _selectedStoreName = value;
-                CalculateShowingDeals();                
+                CalculateShowingDeals();
             }
         }
 
-        public List<string> StoreNames { get; private set; }
-        public List<Store> Stores { get; private set; }
+        private string selectedComparisonOperator;
+        public string SelectedComparisonOperator
+        {
+            get { return selectedComparisonOperator; }
+            set
+            {
+                selectedComparisonOperator = value;
+                CalculateShowingDeals();
+            }
+        }
 
+        private string selectedComparisonType;
+        public string SelectedComparisonType
+        {
+            get { return selectedComparisonType; }
+            set
+            {
+                selectedComparisonType = value;
+                CalculateShowingDeals();
+            }
+        }
+
+        private float givenToCompareNumber;
+        public float GivenToCompareNumber
+        {
+            get { return givenToCompareNumber; }
+            set
+            {
+                givenToCompareNumber = value;
+                CalculateShowingDeals();
+            }
+        }
 
         private List<Deal> _showingDeals;
         public List<Deal> ShowingDeals
@@ -171,16 +202,11 @@ namespace Project.ViewModel
             SetAlertCommand = new RelayCommand(SetAlert);
             Stores = LocalGameRepository.GetStores();
             StoreNames = LocalGameRepository.GetStoreNames();
+            ShowingDeals = CurrentGame.Deals;
         }
 
         public void CalculateShowingDeals()
         {
-            if (SelectedStoreName.Equals("<all stores>"))
-            {
-                ShowingDeals = CurrentGame.Deals;
-                return;
-            }
-
             List<Deal> showingDeals = new List<Deal>();
             //determine the store index of the SelectedStoreName
             string selectedStoreId = "";
@@ -193,12 +219,12 @@ namespace Project.ViewModel
                 }
             }
 
-            if (selectedStoreId.Equals(""))
-                return;
+            if (SelectedComparisonOperator == null) return;
+            if(SelectedComparisonType == null) return;
 
             foreach (var deal in CurrentGame.Deals)
             {
-                if (deal.StoreId.Equals(selectedStoreId))
+                if(LocalGameRepository.CheckDeal(deal, selectedStoreId, SelectedComparisonOperator, SelectedComparisonType, GivenToCompareNumber))
                     showingDeals.Add(deal);
             }
 

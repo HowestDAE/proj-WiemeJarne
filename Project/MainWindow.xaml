@@ -12,6 +12,7 @@
     </Window.DataContext>
     <Grid>
         <Frame NavigationUIVisibility="Hidden" Content="{Binding CurrentPage}"/>
+        <Button Visibility="{Binding IsSearchButtonVisible}" Margin="0,1,2,0" VerticalAlignment="Top" HorizontalAlignment="Right" Command="{Binding SearchDealsCommand}" Content="Search" Foreground="#b0b8c5" Background="#414855" BorderBrush="#b0b8c5"/>
         <Button VerticalAlignment="Bottom" Command="{Binding SwitchPageCommand}" Content="{Binding CommandText}" Foreground="#b0b8c5" Background="#414855" BorderBrush="#b0b8c5"/>
     </Grid>
 </Window>

@@ -48,25 +48,94 @@ namespace Project.Repository
             return _games;
         }
 
-        public static List<Game> GetGames(string storeId)
+        public static List<Game> GetGames(string storeName, string comparisonOperator, string comparisonType, float toCompareNumber)
         {
-            if (storeId.Equals("-1"))
+            bool shouldCheckStoreId = false;
+            if (!storeName.Equals("<all stores>"))
+                shouldCheckStoreId = true;
+
+            List<Game> filteredGames = new List<Game>();
+
+            string storeId = "";
+            if (shouldCheckStoreId)
+            {
+                storeId = GetStoreId(storeName);
+            }
+
+            if (comparisonOperator == null)
                 return GetGames();
 
-            List<Game> gamesByStore = new List<Game>();
+            if (comparisonType == null)
+                return GetGames();
 
             //loop over all the games
             foreach(Game game in _games)
             {
+                int amountOfFilteredDeals = 0;
                 //loop over all the deal in from the games and if the game has a deal with the given storeName add it to the _gamesByStore list
                 foreach(Deal deal in game.Deals)
                 {
-                    if (deal.StoreId.Equals(storeId))
-                        gamesByStore.Add(game);
+                    if (CheckDeal(deal, storeId, comparisonOperator, comparisonType, toCompareNumber))
+                        ++amountOfFilteredDeals;
                 }
+
+                if(amountOfFilteredDeals > 0)
+                    filteredGames.Add(game);
             }
 
-            return gamesByStore;
+            return filteredGames;
+        }
+
+        public static bool CheckDeal(Deal deal, string storeId, string comparisonOperator, string comparisonType, float toCompareNumber)
+        {
+            bool shouldCheckStoreId = true;
+            if(storeId.Equals(""))
+                shouldCheckStoreId = false;
+
+            if (shouldCheckStoreId && deal.StoreId.Equals(storeId))
+            {
+                if (comparisonType.Equals("USD") && CheckDealSalePrice(deal.SalePrice, comparisonOperator, toCompareNumber))
+                    return true;
+                else if (comparisonType.Equals("%") && CheckDealSalePercentage(deal.SavingPercentage, comparisonOperator, toCompareNumber))
+                    return true;
+            }
+            else if (!shouldCheckStoreId)
+            {
+                if (comparisonType.Equals("USD") && CheckDealSalePrice(deal.SalePrice, comparisonOperator, toCompareNumber))
+                    return true;
+                else if (comparisonType.Equals("%") && CheckDealSalePercentage(deal.SavingPercentage, comparisonOperator, toCompareNumber))
+                    return true;
+            }
+
+            return false;
+        }
+
+        private static bool CheckDealSalePrice(float price, string comparisonOperator, float toCompareNumber)
+        {
+            if (comparisonOperator.Equals("<") && price < toCompareNumber)
+                return true;
+
+            if (comparisonOperator.Equals(">") && price > toCompareNumber)
+                return true;
+
+            if (comparisonOperator.Equals("=") && price == toCompareNumber)
+                return true;
+
+            return false;
+        }
+
+        private static bool CheckDealSalePercentage(float pertencate, string comparisonOperator, float toCompareNumber)
+        {
+            if (comparisonOperator.Equals("<") && pertencate < toCompareNumber)
+                return true;
+
+            if (comparisonOperator.Equals(">") && pertencate > toCompareNumber)
+                return true;
+
+            if (comparisonOperator.Equals("=") && pertencate == toCompareNumber)
+                return true;
+
+            return false;
         }
 
         private static List<Store> _stores;
@@ -106,6 +175,23 @@ namespace Project.Repository
             }
 
             return _stores;
+        }
+
+        private static string GetStoreId(string storeName)
+        {
+            GetStores();
+
+            string storeId = "";
+            foreach (var store in _stores)
+            {
+                if (store.Name.Equals(storeName))
+                {
+                    storeId = store.Id;
+                    break;
+                }
+            }
+
+            return storeId;
         }
 
         public static List<string> GetStoreNames()

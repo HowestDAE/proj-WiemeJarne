@@ -19,9 +19,33 @@
             <RowDefinition Height="auto"/>
         </Grid.RowDefinitions>
 
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition />
+            <ColumnDefinition />
+        </Grid.ColumnDefinitions>
+
         <ComboBox VerticalAlignment="Top" ItemsSource="{Binding StoreNames}" SelectedItem="{Binding SelectedStoreName}"/>
 
-        <ListBox ItemsSource="{Binding Games}" ScrollViewer.HorizontalScrollBarVisibility="Disabled"  Background="#24282f" SelectedItem="{Binding SelectedGame}" HorizontalAlignment="Center" BorderBrush="Transparent" Margin="0,25,0,25">
+        <Grid Background="#24282f" Grid.Column="1" Grid.Row="0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition />
+                <ColumnDefinition />
+            </Grid.ColumnDefinitions>
+
+            <StackPanel Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Center">
+                <ComboBox VerticalAlignment="Top" ItemsSource="{Binding ComparisonOperators}" SelectedItem="{Binding SelectedComparisonOperator}"/>
+                
+                <!--a border to have rounded corners on around the TextBox-->
+                <Border Background="#414855" CornerRadius="5" VerticalAlignment="Top" Margin="0,2,0,0">
+                    <!--a textbox where the user can type in a price or percentage depending on what the next comboBox is set to. the StringFormat for the text is set to show 2 decimals-->
+                    <TextBox TextAlignment="Center" Text="{Binding GivenToCompareNumber, StringFormat={}{0:F2}}" Foreground="#b0b8c5" Background="Transparent" BorderBrush="Transparent"/>
+                </Border>
+
+                <ComboBox Grid.Column="1" VerticalAlignment="Top" HorizontalAlignment="Right" ItemsSource="{Binding Types}" SelectedItem="{Binding SelectedComparisonType}"/>
+            </StackPanel>
+        </Grid>
+
+        <ListBox Grid.ColumnSpan="2" ItemsSource="{Binding Games}" ScrollViewer.HorizontalScrollBarVisibility="Disabled"  Background="#24282f" SelectedItem="{Binding SelectedGame}" HorizontalAlignment="Center" BorderBrush="Transparent" Margin="0,25,0,25">
             <ListBox.ItemsPanel>
                 <ItemsPanelTemplate>
                     <WrapPanel Orientation="Horizontal" Width="auto"/>

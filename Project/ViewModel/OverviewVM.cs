@@ -1,6 +1,7 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using Project.Model;
 using Project.Repository;
+using System;
 using System.Collections.Generic;
 
 namespace Project.ViewModel
@@ -23,36 +24,58 @@ namespace Project.ViewModel
         public string SelectedStoreName
         {
             get { return _selectedStoreName; }
-            set 
-            { 
+            set
+            {
                 _selectedStoreName = value;
-
-                if(SelectedStoreName.Equals("<all stores>"))
-                {
-                    Games = LocalGameRepository.GetGames("-1"); //if all the stores should be shown use index of -1
-                }
-                else
-                {
-                    foreach (var store in Stores)
-                    {
-                        if (SelectedStoreName.Equals(store.Name))
-                        {
-                            Games = LocalGameRepository.GetGames(store.Id);
-                            break;
-                        }
-                    }
-                }
-
-                OnPropertyChanged(nameof(Games));
             }
         }
 
-        public List<string> Sorters { get; private set; }
-        = new List<string>()
+        public List<string> ComparisonOperators { get; private set; }
+            = new List<string>()
+            {
+                ">",
+                "<",
+                "="
+            };
+
+
+        private string _selectedComparisonOperator;
+        public string SelectedComparisonOperator
         {
-            "A-Z",
-            "Z-A"
-        };
+            get { return _selectedComparisonOperator; }
+            set
+            {
+                _selectedComparisonOperator = value;
+            }
+        }
+
+        public List<string> Types { get; private set; }
+            = new List<string>()
+            {
+                "USD",
+                "%"
+            };
+
+        private string _selectedType;
+
+        public string SelectedComparisonType
+        {
+            get { return _selectedType; }
+            set
+            {
+                _selectedType = value;
+            }
+        }
+
+        private float givenToCompareNumber;
+        public float GivenToCompareNumber
+        {
+            get { return givenToCompareNumber; }
+            set
+            {
+                givenToCompareNumber = value;
+            }
+        }
 
         public OverviewVM()
         {
@@ -61,6 +84,15 @@ namespace Project.ViewModel
             StoreNames = LocalGameRepository.GetStoreNames();
             StoreNames.Add("<all stores>");
             SelectedStoreName = "<all stores>";
+            SelectedComparisonOperator = ComparisonOperators[0];
+            SelectedComparisonType = Types[0];
+            GivenToCompareNumber = 0.00f;
+        }
+
+        public void UpdateGames()
+        {
+            Games = LocalGameRepository.GetGames(SelectedStoreName, SelectedComparisonOperator, SelectedComparisonType, GivenToCompareNumber);
+            OnPropertyChanged(nameof(Games));
         }
     }
 }
