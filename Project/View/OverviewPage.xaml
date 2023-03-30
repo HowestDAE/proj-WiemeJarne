@@ -24,7 +24,16 @@
             <ColumnDefinition />
         </Grid.ColumnDefinitions>
 
-        <ComboBox VerticalAlignment="Top" ItemsSource="{Binding StoreNames}" SelectedItem="{Binding SelectedStoreName}"/>
+        <ComboBox VerticalAlignment="Top" ItemsSource="{Binding Stores}" SelectedItem="{Binding SelectedStore}">
+            <ComboBox.ItemTemplate>
+                <DataTemplate>
+                    <StackPanel Orientation="Horizontal">
+                        <Image Source="{Binding IconUrl}" Height="15" Width="15"/>
+                        <TextBlock Text="{Binding Name}" Margin="5,0,0,0"/>
+                    </StackPanel>
+                </DataTemplate>
+            </ComboBox.ItemTemplate>
+        </ComboBox>
 
         <Grid Background="#24282f" Grid.Column="1" Grid.Row="0">
             <Grid.ColumnDefinitions>

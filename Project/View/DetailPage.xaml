@@ -16,6 +16,7 @@
 
     <Page.Resources>
         <conv:StoreIdToStringConverter x:Key="StoreIdToString"/>
+        <conv:StoreIdToIconUrlConverter x:Key="StoreIdToIconUrl"/>
     </Page.Resources>
 
     <Grid Background="#24282f" Margin="0,0,0,25">
@@ -62,8 +63,8 @@
                                     <RowDefinition Height="auto"/>
                                 </Grid.RowDefinitions>
 
-                                <!--TextBlock for the title of the store-->
-                                <TextBlock Text="{Binding StoreId, Converter={StaticResource StoreIdToString}}" Grid.ColumnSpan="2" Foreground="#b0b8c5" TextAlignment="Center"/>
+                                <!--shows the banner of the store-->
+                                <Image Grid.Row="0" Source="{Binding StoreId, Converter={StaticResource StoreIdToIconUrl}}" MaxHeight="25" MaxWidth="100"/>
 
                                 <!--TextBlock for how much the game ussualy cost on that store in USD-->
                                 <TextBlock Grid.Row="1" Foreground="#b0b8c5">

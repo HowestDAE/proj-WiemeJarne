@@ -90,6 +90,7 @@
     <Compile Include="ViewModel\DetailVM.cs" />
     <Compile Include="ViewModel\MainViewModel.cs" />
     <Compile Include="ViewModel\OverviewVM.cs" />
+    <Compile Include="View\Converters\StoreIdToIconUrlConverter.cs" />
     <Compile Include="View\Converters\StoreIdToStringConverter.cs" />
     <Compile Include="View\DetailPage.xaml.cs">
       <DependentUpon>DetailPage.xaml</DependentUpon>

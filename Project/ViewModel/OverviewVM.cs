@@ -3,6 +3,7 @@ using Project.Model;
 using Project.Repository;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Project.ViewModel
 {
@@ -20,13 +21,13 @@ namespace Project.ViewModel
         public List<string> StoreNames { get; private set; }
         public List<Store> Stores { get; private set; }
 
-        public string _selectedStoreName;
-        public string SelectedStoreName
+        public Store _selectedStore;
+        public Store SelectedStore
         {
-            get { return _selectedStoreName; }
+            get { return _selectedStore; }
             set
             {
-                _selectedStoreName = value;
+                _selectedStore = value;
             }
         }
 
@@ -81,9 +82,8 @@ namespace Project.ViewModel
         {
             Games = LocalGameRepository.GetGames();
             Stores = LocalGameRepository.GetStores();
-            StoreNames = LocalGameRepository.GetStoreNames();
-            StoreNames.Add("<all stores>");
-            SelectedStoreName = "<all stores>";
+            Stores.Add(new Store() { Name = "<all stores>", Id = "" });
+            SelectedStore = Stores.Last();
             SelectedComparisonOperator = ComparisonOperators[0];
             SelectedComparisonType = Types[0];
             GivenToCompareNumber = 0.00f;
@@ -91,7 +91,7 @@ namespace Project.ViewModel
 
         public void UpdateGames()
         {
-            Games = LocalGameRepository.GetGames(SelectedStoreName, SelectedComparisonOperator, SelectedComparisonType, GivenToCompareNumber);
+            Games = LocalGameRepository.GetGames(SelectedStore.Name, SelectedComparisonOperator, SelectedComparisonType, GivenToCompareNumber);
             OnPropertyChanged(nameof(Games));
         }
     }
