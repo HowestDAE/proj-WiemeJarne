@@ -54,6 +54,7 @@ namespace Project.ViewModel
                 if (selectedGame == null) return;
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 
                 
 
@@ -61,6 +62,13 @@ namespace Project.ViewModel
                 (DetailPage.DataContext as DetailVM).SelectedStore = selectedStore;
                 
 
+=======
+                string selectedStoreName = (OverviewPage.DataContext as OverviewVM).SelectedStoreName;
+                if (selectedStoreName == null) return;
+
+                (DetailPage.DataContext as DetailVM).CurrentGame = selectedGame;
+                (DetailPage.DataContext as DetailVM).SelectedStoreName = selectedStoreName;
+>>>>>>> parent of 7087c68 (changed the comboBox for the stores to also have the icon in it)
 =======
                 string selectedStoreName = (OverviewPage.DataContext as OverviewVM).SelectedStoreName;
                 if (selectedStoreName == null) return;
@@ -88,6 +96,11 @@ namespace Project.ViewModel
             if (CurrentPage is OverviewPage)
             {
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+                string selectedStoreName = (OverviewPage.DataContext as OverviewVM).SelectedStoreName;
+                if (selectedStoreName == null) return;
+>>>>>>> parent of 7087c68 (changed the comboBox for the stores to also have the icon in it)
 =======
                 string selectedStoreName = (OverviewPage.DataContext as OverviewVM).SelectedStoreName;
                 if (selectedStoreName == null) return;
@@ -102,6 +115,10 @@ namespace Project.ViewModel
                 float givenToCompareNumber = (OverviewPage.DataContext as OverviewVM).GivenToCompareNumber;
 
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+                (DetailPage.DataContext as DetailVM).SelectedStoreName = selectedStoreName;
+>>>>>>> parent of 7087c68 (changed the comboBox for the stores to also have the icon in it)
 =======
                 (DetailPage.DataContext as DetailVM).SelectedStoreName = selectedStoreName;
 >>>>>>> parent of 7087c68 (changed the comboBox for the stores to also have the icon in it)

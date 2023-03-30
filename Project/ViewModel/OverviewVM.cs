@@ -21,9 +21,19 @@ namespace Project.ViewModel
         public List<Store> Stores { get; private set; }
 
 <<<<<<< HEAD
+<<<<<<< HEAD
         {
             set
             {
+=======
+        public string _selectedStoreName;
+        public string SelectedStoreName
+        {
+            get { return _selectedStoreName; }
+            set
+            {
+                _selectedStoreName = value;
+>>>>>>> parent of 7087c68 (changed the comboBox for the stores to also have the icon in it)
 =======
         public string _selectedStoreName;
         public string SelectedStoreName
@@ -88,8 +98,14 @@ namespace Project.ViewModel
             Games = LocalGameRepository.GetGames();
             Stores = LocalGameRepository.GetStores();
 <<<<<<< HEAD
+<<<<<<< HEAD
             Stores.Add(new Store() { Name = "<all stores>", Id = "" });
             SelectedStore = Stores.Last();
+=======
+            StoreNames = LocalGameRepository.GetStoreNames();
+            StoreNames.Add("<all stores>");
+            SelectedStoreName = "<all stores>";
+>>>>>>> parent of 7087c68 (changed the comboBox for the stores to also have the icon in it)
 =======
             StoreNames = LocalGameRepository.GetStoreNames();
             StoreNames.Add("<all stores>");
@@ -103,6 +119,10 @@ namespace Project.ViewModel
         public void UpdateGames()
         {
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+            Games = LocalGameRepository.GetGames(SelectedStoreName, SelectedComparisonOperator, SelectedComparisonType, GivenToCompareNumber);
+>>>>>>> parent of 7087c68 (changed the comboBox for the stores to also have the icon in it)
 =======
             Games = LocalGameRepository.GetGames(SelectedStoreName, SelectedComparisonOperator, SelectedComparisonType, GivenToCompareNumber);
 >>>>>>> parent of 7087c68 (changed the comboBox for the stores to also have the icon in it)
