@@ -25,7 +25,7 @@ namespace Project.Repository
 
             var resourceName = "Project.Resources.Data.games.json";
 
-            using (Stream stream = assembly.GetManifestResourceStream(resourceName))
+            using(Stream stream = assembly.GetManifestResourceStream(resourceName))
             {
                 using(var reader = new StreamReader(stream))
                 {
