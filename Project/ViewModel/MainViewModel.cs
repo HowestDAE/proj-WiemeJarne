@@ -53,6 +53,7 @@ namespace Project.ViewModel
                 Game selectedGame = (OverviewPage.DataContext as OverviewVM).SelectedGame;
                 if (selectedGame == null) return;
 
+<<<<<<< HEAD
 
                 
 
@@ -60,6 +61,13 @@ namespace Project.ViewModel
                 (DetailPage.DataContext as DetailVM).SelectedStore = selectedStore;
                 
 
+=======
+                string selectedStoreName = (OverviewPage.DataContext as OverviewVM).SelectedStoreName;
+                if (selectedStoreName == null) return;
+
+                (DetailPage.DataContext as DetailVM).CurrentGame = selectedGame;
+                (DetailPage.DataContext as DetailVM).SelectedStoreName = selectedStoreName;
+>>>>>>> parent of 7087c68 (changed the comboBox for the stores to also have the icon in it)
 
                 CurrentPage = DetailPage;
                 IsSearchButtonVisible = Visibility.Hidden;
@@ -79,6 +87,11 @@ namespace Project.ViewModel
         {
             if (CurrentPage is OverviewPage)
             {
+<<<<<<< HEAD
+=======
+                string selectedStoreName = (OverviewPage.DataContext as OverviewVM).SelectedStoreName;
+                if (selectedStoreName == null) return;
+>>>>>>> parent of 7087c68 (changed the comboBox for the stores to also have the icon in it)
 
                 string selectedComparisonOperator = (OverviewPage.DataContext as OverviewVM).SelectedComparisonOperator;
                 if (selectedComparisonOperator == null) return;
@@ -88,6 +101,10 @@ namespace Project.ViewModel
 
                 float givenToCompareNumber = (OverviewPage.DataContext as OverviewVM).GivenToCompareNumber;
 
+<<<<<<< HEAD
+=======
+                (DetailPage.DataContext as DetailVM).SelectedStoreName = selectedStoreName;
+>>>>>>> parent of 7087c68 (changed the comboBox for the stores to also have the icon in it)
                 (DetailPage.DataContext as DetailVM).SelectedComparisonOperator = selectedComparisonOperator;
                 (DetailPage.DataContext as DetailVM).SelectedComparisonType = selectedComparisonType;
                 (DetailPage.DataContext as DetailVM).GivenToCompareNumber = givenToCompareNumber;
