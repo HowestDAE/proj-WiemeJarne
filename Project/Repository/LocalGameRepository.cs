@@ -157,8 +157,6 @@ namespace Project.Repository
 
                     var obj = JsonConvert.DeserializeObject<List<JObject>>(json);
 
-                    string imageLinkStart = "https://www.cheapshark.com/";
-
                     foreach (var item in obj)
                     {
                         if (!item.SelectToken("isActive").ToObject<bool>())
@@ -168,9 +166,9 @@ namespace Project.Repository
                         store.Id = item.SelectToken("storeID").ToString();
                         store.Name = item.SelectToken("storeName").ToString();
                         var images = item.SelectToken("images");
-                        store.BannerUrl = imageLinkStart + images.SelectToken("banner").ToString();
-                        store.LogoUrl = imageLinkStart + images.SelectToken("logo").ToString();
-                        store.IconUrl = imageLinkStart + images.SelectToken("icon").ToString();
+                        store.BannerUrl = images.SelectToken("banner").ToString();
+                        store.LogoUrl = images.SelectToken("logo").ToString();
+                        store.IconUrl = images.SelectToken("icon").ToString();
                         _stores.Add(store);
                     }
                 }

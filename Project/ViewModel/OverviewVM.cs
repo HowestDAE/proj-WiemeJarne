@@ -21,13 +21,9 @@ namespace Project.ViewModel
         public List<string> StoreNames { get; private set; }
         public List<Store> Stores { get; private set; }
 
-        public Store _selectedStore;
-        public Store SelectedStore
         {
-            get { return _selectedStore; }
             set
             {
-                _selectedStore = value;
             }
         }
 
@@ -91,7 +87,6 @@ namespace Project.ViewModel
 
         public void UpdateGames()
         {
-            Games = LocalGameRepository.GetGames(SelectedStore.Name, SelectedComparisonOperator, SelectedComparisonType, GivenToCompareNumber);
             OnPropertyChanged(nameof(Games));
         }
     }

@@ -53,8 +53,6 @@ namespace Project.ViewModel
                 Game selectedGame = (OverviewPage.DataContext as OverviewVM).SelectedGame;
                 if (selectedGame == null) return;
 
-                Store selectedStore = (OverviewPage.DataContext as OverviewVM).SelectedStore;
-                if (selectedStore == null) return;
 
                 
 
@@ -81,8 +79,6 @@ namespace Project.ViewModel
         {
             if (CurrentPage is OverviewPage)
             {
-                Store selectedStore = (OverviewPage.DataContext as OverviewVM).SelectedStore;
-                if (selectedStore == null) return;
 
                 string selectedComparisonOperator = (OverviewPage.DataContext as OverviewVM).SelectedComparisonOperator;
                 if (selectedComparisonOperator == null) return;
@@ -92,7 +88,6 @@ namespace Project.ViewModel
 
                 float givenToCompareNumber = (OverviewPage.DataContext as OverviewVM).GivenToCompareNumber;
 
-                (DetailPage.DataContext as DetailVM).SelectedStore = selectedStore;
                 (DetailPage.DataContext as DetailVM).SelectedComparisonOperator = selectedComparisonOperator;
                 (DetailPage.DataContext as DetailVM).SelectedComparisonType = selectedComparisonType;
                 (DetailPage.DataContext as DetailVM).GivenToCompareNumber = givenToCompareNumber;
