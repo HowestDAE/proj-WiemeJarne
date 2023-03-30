@@ -142,13 +142,14 @@ namespace Project.ViewModel
         public List<Store> Stores { get; private set; }
 
         public List<string> StoreNames { get; private set; }
-        private string _selectedStoreName;
-        public string SelectedStoreName
+
+        public Store _selectedStore;
+        public Store SelectedStore
         {
-            get { return _selectedStoreName; }
+            get { return _selectedStore; }
             set
             {
-                _selectedStoreName = value;
+                _selectedStore = value;
                 CalculateShowingDeals();
             }
         }
@@ -212,7 +213,7 @@ namespace Project.ViewModel
             string selectedStoreId = "";
             foreach (var store in Stores)
             {
-                if (store.Name.Equals(SelectedStoreName))
+                if (store.Name.Equals(SelectedStore.Name))
                 {
                     selectedStoreId = store.Id;
                     break;
