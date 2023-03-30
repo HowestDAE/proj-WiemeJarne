@@ -166,9 +166,10 @@ namespace Project.Repository
                         store.Id = item.SelectToken("storeID").ToString();
                         store.Name = item.SelectToken("storeName").ToString();
                         var images = item.SelectToken("images");
-                        store.BannerUrl = images.SelectToken("banner").ToString();
-                        store.LogoUrl = images.SelectToken("logo").ToString();
-                        store.IconUrl = images.SelectToken("icon").ToString();
+                        string imagesUrlStart = "https://www.cheapshark.com/";
+                        store.BannerUrl = imagesUrlStart + images.SelectToken("banner").ToString();
+                        store.LogoUrl = imagesUrlStart + images.SelectToken("logo").ToString();
+                        store.IconUrl = imagesUrlStart + images.SelectToken("icon").ToString();
                         _stores.Add(store);
                     }
                 }
