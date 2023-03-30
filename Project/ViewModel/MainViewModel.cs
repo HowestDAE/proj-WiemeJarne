@@ -56,8 +56,12 @@ namespace Project.ViewModel
                 Store selectedStore = (OverviewPage.DataContext as OverviewVM).SelectedStore;
                 if (selectedStore == null) return;
 
+                
+
                 (DetailPage.DataContext as DetailVM).CurrentGame = selectedGame;
                 (DetailPage.DataContext as DetailVM).SelectedStore = selectedStore;
+                
+
 
                 CurrentPage = DetailPage;
                 IsSearchButtonVisible = Visibility.Hidden;
