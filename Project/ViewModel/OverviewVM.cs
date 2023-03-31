@@ -1,4 +1,5 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
 using Project.Model;
 using Project.Repository;
 using System;
@@ -102,6 +103,8 @@ namespace Project.ViewModel
             }
         }
 
+        public RelayCommand LoadGamesCommand { get; private set; }
+
         public OverviewVM()
         {
             if (_useApi)
@@ -116,11 +119,19 @@ namespace Project.ViewModel
                 Games = LocalGameRepository.GetGames();
                 Stores = LocalGameRepository.GetStores();
             }
+
+            LoadGamesCommand = new RelayCommand(Load100Games);
         }
 
         private async void LoadGames(int minAmount)
         {
             Games = await ApiGameRepository.LoadGamesAsync(minAmount);
+        }
+
+        private async void Load100Games()
+        {
+            Games = await ApiGameRepository.LoadGamesAsync(100);
+            UpdateGames();
         }
 
         private async void LoadStores()
@@ -139,8 +150,6 @@ namespace Project.ViewModel
                 Games = await ApiGameRepository.GetGamesAsync(SelectedStore.Name, SelectedComparisonOperator, SelectedComparisonType, GivenToCompareNumber);
             else
                 Games = LocalGameRepository.GetGames(SelectedStore.Name, SelectedComparisonOperator, SelectedComparisonType, GivenToCompareNumber);
-
-            OnPropertyChanged(nameof(Games));
         }
     }
 }

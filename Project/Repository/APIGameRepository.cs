@@ -24,11 +24,12 @@ namespace Project.Repository
             //create the endPoint with 25 ids this is the max amount of games per request
             //the id from the last loaded game is used because some id's aren't used so it is not possible to use _games.Count()
 
-            while (_games.Count() < minAmountOfGamesToLoad)
+            int amountOfNewlyLoadedGames = 0;
+            while (amountOfNewlyLoadedGames < minAmountOfGamesToLoad)
             {
                 string endPoint = CalculateGamesEndPoint();
                 _latestGameId += 25;
-                await LoadGamesAsync(endPoint);
+                amountOfNewlyLoadedGames += await LoadGamesAsync(endPoint);
             }
 
             return _games;
@@ -40,8 +41,9 @@ namespace Project.Repository
             return $"https://www.cheapshark.com/api/1.0/games?ids={gameIds}";
         }
 
-        private async Task LoadGamesAsync(string endPoint)
+        private async Task<int> LoadGamesAsync(string endPoint)
         {
+            int amountOfNewlyLoadedGames = 0;
             using (HttpClient client = new HttpClient())
             {
                 try
@@ -63,12 +65,16 @@ namespace Project.Repository
                         game.ImageUrl = info.SelectToken("thumb").ToString();
                         game.Deals = item.Value.SelectToken("deals").ToObject<List<Deal>>();
                         _games.Add(game);
+                        ++amountOfNewlyLoadedGames;
                     }
+                    return amountOfNewlyLoadedGames;
                 }
                 catch (HttpRequestException exception)
                 {
                     MessageBox.Show($"{exception.Message}", "ERROR", MessageBoxButton.OK, MessageBoxImage.Error);
                 }
+
+                return 0;
             }
         }
 
