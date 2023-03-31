@@ -7,8 +7,10 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Runtime.InteropServices;
+using System.Security.Permissions;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Input;
 
 namespace Project.ViewModel
@@ -53,7 +55,8 @@ namespace Project.ViewModel
         }
 
         public RelayCommand BrowseToSelectedDealCommand { get; private set; }
-        public RelayCommand SetAlertCommand { get; private set; }
+        public RelayCommand SetPriceAlertCommand { get; private set; }
+        public RelayCommand DeletePriceAlertCommand { get; private set; }
 
         private Deal _selectedDeal;
         public Deal SelectedDeal
@@ -124,7 +127,8 @@ namespace Project.ViewModel
         public DetailVM()
         {
             BrowseToSelectedDealCommand = new RelayCommand(BrowseToSelectedDeal);
-            SetAlertCommand = new RelayCommand(SetAlert);
+            SetPriceAlertCommand = new RelayCommand(SetPriceAlert);
+            DeletePriceAlertCommand = new RelayCommand(DeletePriceAlert);
             if(_useApi)
             {
                 ApiGameRepository = new APIGameRepository();
@@ -177,9 +181,24 @@ namespace Project.ViewModel
             Process.Start(url);
         }
 
-        public void SetAlert() //this function will only work when the api is in use
+        public async void SetPriceAlert() //this function only work when the api is in use
         {
+            if(!_useApi)
+                MessageBox.Show("Failed set alert this feature is only available when using the api", "ERROR", MessageBoxButton.OK, MessageBoxImage.Error);
+            else
+            {
+                await ApiGameRepository.SetPriceAlertAsync(UserEmail, CurrentGame.Id, PriceToReach);
+            }
+        }
 
+        public async void DeletePriceAlert() //this function only works when the api is in use
+        {
+            if (!_useApi)
+                MessageBox.Show("Failed delete alert this feature is only available when using the api", "ERROR", MessageBoxButton.OK, MessageBoxImage.Error);
+            else
+            {
+                await ApiGameRepository.DeletePriceAlertAsync(UserEmail, CurrentGame.Id, PriceToReach);
+            }
         }
     }
 }

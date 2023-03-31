@@ -60,6 +60,7 @@ namespace Project.Repository
                     foreach (var item in obj)
                     {
                         Game game = new Game();
+                        game.Id = Convert.ToInt32(item.Key);
                         var info = item.Value.SelectToken("info");
                         game.Title = info.SelectToken("title").ToString();
                         game.ImageUrl = info.SelectToken("thumb").ToString();
@@ -233,6 +234,58 @@ namespace Project.Repository
             }
 
             return storeId;
+        }
+
+        public async Task SetPriceAlertAsync(string email, int gameId, string price)
+        {
+            string endPoint = $"https://www.cheapshark.com/api/1.0/alerts?action=set&email={email}&gameID={gameId}&price={price}";
+
+            using (HttpClient client = new HttpClient())
+            {
+                try
+                {
+                    var response = await client.GetAsync(endPoint);
+
+                    if (!response.IsSuccessStatusCode)
+                        throw new HttpRequestException(response.ReasonPhrase);
+
+                    string json = await response.Content.ReadAsStringAsync();
+
+                    string result = JsonConvert.DeserializeObject<string>(json);
+
+                    MessageBox.Show($"price alert set succeeded you will receive an email from no-reply@cheapshark.com when the price drops below {price} USD", "Info", MessageBoxButton.OK, MessageBoxImage.Information);
+                }
+                catch (HttpRequestException)
+                {
+                    MessageBox.Show("Failed set alert please enter a valid e-mail address", "ERROR", MessageBoxButton.OK, MessageBoxImage.Error);
+                }
+            }
+        }
+
+        public async Task DeletePriceAlertAsync(string email, int gameId, string price)
+        {
+            string endPoint = $"https://www.cheapshark.com/api/1.0/alerts?action=set&email={email}&gameID={gameId}&price={price}";
+
+            using (HttpClient client = new HttpClient())
+            {
+                try
+                {
+                    var response = await client.GetAsync(endPoint);
+
+                    if (!response.IsSuccessStatusCode)
+                        throw new HttpRequestException(response.ReasonPhrase);
+
+                    string json = await response.Content.ReadAsStringAsync();
+
+                    string result = JsonConvert.DeserializeObject<string>(json);
+
+                    MessageBox.Show($"price alert delete succeeded you will no longer receive emails for this game", "Info", MessageBoxButton.OK, MessageBoxImage.Information);
+                }
+                catch (HttpRequestException)
+                {
+                    MessageBox.Show("Failed delete alert please enter a valid e-mail address", "ERROR", MessageBoxButton.OK, MessageBoxImage.Error);
+                }
+            }
         }
     }
 }

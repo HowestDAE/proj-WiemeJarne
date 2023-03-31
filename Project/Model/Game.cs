@@ -9,6 +9,8 @@ namespace Project.Model
 {
     public class Game
     {
+        public int Id { get; set; }
+
         [JsonProperty(PropertyName = "title")]
         public string Title { get; set; }
 

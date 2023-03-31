@@ -98,29 +98,47 @@
                 <TextBlock Text="browse to selected deal" Margin="5,0,5,0" Foreground="#b0b8c5"/>
             </Button>
         </Viewbox>
+
+        <Grid Background="#24282f" Grid.Row="1" Grid.Column="2">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+
+            <!-- ViewBox so the button inside it sizes according to the window size-->
+            <Viewbox Grid.Row="0" VerticalAlignment="Top" HorizontalAlignment="Center">
+                <!--Border so the TextBox has rounded corners-->
+                <Border Background="#414855" CornerRadius="5" Margin="2">
+                    <TextBox VerticalAlignment="Top" Text="{Binding UserEmail, FallbackValue=(enter email here)}" Foreground="#b0b8c5" Background="Transparent" BorderBrush="Transparent" Margin="3" FontSize="10"/>
+                </Border>
+            </Viewbox>
+
+            <!-- ViewBox so the button inside it sizes according to the window size-->
+            <Viewbox Grid.Row="1" VerticalAlignment="Center" HorizontalAlignment="Center">
+                <!--Border so the TextBox has rounded corners-->
+                <Border Background="#414855" CornerRadius="5" Margin="2">
+                    <TextBox VerticalAlignment="Top" Text="{Binding PriceToReach, FallbackValue=(enter price to reach here)}" Foreground="#b0b8c5" Background="Transparent" BorderBrush="Transparent" Margin="3" FontSize="10"/>
+                </Border>
+            </Viewbox>
+
+            <!-- ViewBox so the button inside it sizes according to the window size-->
+            <Viewbox Grid.Row="2" VerticalAlignment="Bottom" HorizontalAlignment="Center">
+                <!--when this button is clicked an alert will be will be set for the entered email address (if that email is valid) and for the to reach price-->
+                <Button Command="{Binding SetPriceAlertCommand}" Margin="2" Background="#414855" BorderBrush="#b0b8c5">
+                    <TextBlock Text="set price alert" Margin="5,0,5,0" Foreground="#b0b8c5" FontSize="5"/>
+                </Button>
+            </Viewbox>
+
+            <Viewbox Grid.Row="3" VerticalAlignment="Bottom" HorizontalAlignment="Center">
+                <!--when this button is clicked an alert will be will be set for the entered email address (if that email is valid) and for the to reach price-->
+                <Button Command="{Binding DeletePriceAlertCommand}" Margin="2" Background="#414855" BorderBrush="#b0b8c5">
+                    <TextBlock Text="delete price alert" Margin="5,0,5,0" Foreground="#b0b8c5" FontSize="5"/>
+                </Button>
+            </Viewbox>
+        </Grid>
+
         
-        <!-- ViewBox so the button inside it sizes according to the window size-->
-        <Viewbox Grid.Row="1" Grid.Column="2" VerticalAlignment="Top" HorizontalAlignment="Center">
-            <!--Border so the TextBox has rounded corners-->
-            <Border Background="#414855" CornerRadius="5" Margin="10,0,10,50">
-                <TextBox VerticalAlignment="Top" Text="{Binding UserEmail, FallbackValue=(enter email here)}" Foreground="#b0b8c5" Background="Transparent" BorderBrush="Transparent" Margin="3"/>
-            </Border>
-        </Viewbox>
-
-        <!-- ViewBox so the button inside it sizes according to the window size-->
-        <Viewbox Grid.Row="1" Grid.Column="2" VerticalAlignment="Center" HorizontalAlignment="Center">
-            <!--Border so the TextBox has rounded corners-->
-            <Border Background="#414855" CornerRadius="5" Margin="10,40,10,40">
-                <TextBox VerticalAlignment="Top" Text="{Binding PriceToReach, FallbackValue=(enter price to reach here)}" Foreground="#b0b8c5" Background="Transparent" BorderBrush="Transparent" Margin="3"/>
-            </Border>
-        </Viewbox>
-
-        <!-- ViewBox so the button inside it sizes according to the window size-->
-        <Viewbox Grid.Row="1" Grid.Column="2" VerticalAlignment="Bottom" HorizontalAlignment="Center">
-            <!--when this button is clicked an alert will be will be set for the entered email address (if that email is valid) and for the to reach price-->
-            <Button Command="{Binding SetAlertCommand}" Margin="30, 0, 30, 20" Background="#414855" BorderBrush="#b0b8c5">
-                <TextBlock Text="set alert for selected deal" Margin="5,0,5,0" Foreground="#b0b8c5"/>
-            </Button>
-        </Viewbox>
     </Grid>
 </Page>
