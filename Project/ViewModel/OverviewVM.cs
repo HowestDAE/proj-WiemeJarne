@@ -9,7 +9,20 @@ namespace Project.ViewModel
 {
     public class OverviewVM : ObservableObject
     {
-        public List<Game> Games { get; set; }
+        private readonly bool _useApi = true;
+
+        private APIGameRepository ApiGameRepository { get; set; }
+
+        private List<Game> _games;
+        public List<Game> Games
+        {
+            get { return _games; }
+            set
+            {
+                _games = value;
+                OnPropertyChanged(nameof(Games));
+            }
+        }
 
         private Game _selectedGame;
         public Game SelectedGame
@@ -18,8 +31,16 @@ namespace Project.ViewModel
             set { _selectedGame = value; }
         }
 
-        public List<string> StoreNames { get; private set; }
-        public List<Store> Stores { get; private set; }
+        private List<Store> _stores;
+        public List<Store> Stores
+        {
+            get { return _stores; }
+            private set
+            {
+                _stores = value;
+                OnPropertyChanged(nameof(Stores));
+            }
+        }
 
         public Store _selectedStore;
         public Store SelectedStore
@@ -28,6 +49,7 @@ namespace Project.ViewModel
             set
             {
                 _selectedStore = value;
+                OnPropertyChanged(nameof(SelectedStore));
             }
         }
 
@@ -39,7 +61,6 @@ namespace Project.ViewModel
                 "="
             };
 
-
         private string _selectedComparisonOperator;
         public string SelectedComparisonOperator
         {
@@ -47,6 +68,7 @@ namespace Project.ViewModel
             set
             {
                 _selectedComparisonOperator = value;
+                OnPropertyChanged(nameof(SelectedComparisonOperator));
             }
         }
 
@@ -65,6 +87,7 @@ namespace Project.ViewModel
             set
             {
                 _selectedType = value;
+                OnPropertyChanged(nameof(SelectedComparisonType));
             }
         }
 
@@ -75,14 +98,34 @@ namespace Project.ViewModel
             set
             {
                 givenToCompareNumber = value;
+                OnPropertyChanged(nameof(GivenToCompareNumber));
             }
         }
 
         public OverviewVM()
         {
-            Games = LocalGameRepository.GetGames();
-            Stores = LocalGameRepository.GetStores();
+            if (_useApi)
+            {
+                ApiGameRepository = new APIGameRepository();
 
+                LoadGames(100);
+                LoadStores();
+            }
+            else
+            {
+                Games = LocalGameRepository.GetGames();
+                Stores = LocalGameRepository.GetStores();
+            }
+        }
+
+        private async void LoadGames(int minAmount)
+        {
+            Games = await ApiGameRepository.LoadGamesAsync(minAmount);
+        }
+
+        private async void LoadStores()
+        {
+            Stores = await ApiGameRepository.GetStores();
             Stores.Add(new Store() { Name = "<all stores>", Id = "" });
             SelectedStore = Stores.Last();
             SelectedComparisonOperator = ComparisonOperators[0];
@@ -90,9 +133,13 @@ namespace Project.ViewModel
             GivenToCompareNumber = 0.00f;
         }
 
-        public void UpdateGames()
+        public async void UpdateGames()
         {
-            Games = LocalGameRepository.GetGames(SelectedStore.Name, SelectedComparisonOperator, SelectedComparisonType, GivenToCompareNumber);
+            if (_useApi)
+                Games = await ApiGameRepository.GetGamesAsync(SelectedStore.Name, SelectedComparisonOperator, SelectedComparisonType, GivenToCompareNumber);
+            else
+                Games = LocalGameRepository.GetGames(SelectedStore.Name, SelectedComparisonOperator, SelectedComparisonType, GivenToCompareNumber);
+
             OnPropertyChanged(nameof(Games));
         }
     }

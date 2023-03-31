@@ -15,7 +15,6 @@
     </Page.DataContext>
 
     <Page.Resources>
-        <conv:StoreIdToStringConverter x:Key="StoreIdToString"/>
         <conv:StoreIdToIconUrlConverter x:Key="StoreIdToIconUrl"/>
     </Page.Resources>
 

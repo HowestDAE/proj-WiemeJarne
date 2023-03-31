@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
@@ -14,86 +15,11 @@ namespace Project.ViewModel
 {
     public class DetailVM : ObservableObject
     {
-        private Game _currentGame;
-            //= new Game()
-            //{
-            //    Title = "minecraft",
-            //    ImageUrl = "https://hb.imgix.net/9524a09e38dc390586719f5803df22a8d608c29d.jpeg?auto=compress,format&fit=crop&h=84&w=135&s=8567b12022081cb16d3462ab09d5b85c",
-            //    Deals = new List<Deal>()
-            //    {
-            //        new Deal()
-            //        {
-            //            StoreId = "1",
-            //            SalePrice = 0,
-            //            NormalPrice = 5.0f,
-            //            SavingPercentage = 100f,
-            //        },
-            //        new Deal()
-            //        {
-            //            StoreId = "2",
-            //            SalePrice = 0,
-            //            NormalPrice = 5.0f,
-            //            SavingPercentage = 100f,
-            //        },
-            //        new Deal()
-            //        {
-            //            StoreId = "3",
-            //            SalePrice = 0,
-            //            NormalPrice = 5.0f,
-            //            SavingPercentage = 100f,
-            //        },
-            //        new Deal()
-            //        {
-            //            StoreId = "4",
-            //            SalePrice = 0,
-            //            NormalPrice = 5.0f,
-            //            SavingPercentage = 100f,
-            //        },
-            //        new Deal()
-            //        {
-            //            StoreId = "5",
-            //            SalePrice = 0,
-            //            NormalPrice = 5.0f,
-            //            SavingPercentage = 100f,
-            //        },
-            //        new Deal()
-            //        {
-            //            StoreId = "6",
-            //            SalePrice = 0,
-            //            NormalPrice = 5.0f,
-            //            SavingPercentage = 100f,
-            //        },
-            //        new Deal()
-            //        {
-            //            StoreId = "7",
-            //            SalePrice = 0,
-            //            NormalPrice = 5.0f,
-            //            SavingPercentage = 100f,
-            //        },
-            //        new Deal()
-            //        {
-            //            StoreId = "8",
-            //            SalePrice = 0,
-            //            NormalPrice = 5.0f,
-            //            SavingPercentage = 100f,
-            //        },
-            //        new Deal()
-            //        {
-            //            StoreId = "9",
-            //            SalePrice = 0,
-            //            NormalPrice = 5.0f,
-            //            SavingPercentage = 100f,
-            //        },
-            //        new Deal()
-            //        {
-            //            StoreId = "10",
-            //            SalePrice = 0,
-            //            NormalPrice = 5.0f,
-            //            SavingPercentage = 100f,
-            //        }
-            //    }
-            //};
+        private readonly bool _useApi = true;
 
+        private APIGameRepository ApiGameRepository { get; set; }
+
+        private Game _currentGame;
         public Game CurrentGame
         {
             get { return _currentGame; }
@@ -199,7 +125,20 @@ namespace Project.ViewModel
         {
             BrowseToSelectedDealCommand = new RelayCommand(BrowseToSelectedDeal);
             SetAlertCommand = new RelayCommand(SetAlert);
-            Stores = LocalGameRepository.GetStores();
+            if(_useApi)
+            {
+                ApiGameRepository = new APIGameRepository();
+                LoadStores();
+            }
+            else
+            {
+                Stores = LocalGameRepository.GetStores();
+            }
+        }
+
+        private async void LoadStores()
+        {
+            Stores = await ApiGameRepository.GetStores();
         }
 
         public void CalculateShowingDeals()
@@ -222,7 +161,10 @@ namespace Project.ViewModel
 
             foreach (var deal in CurrentGame.Deals)
             {
-                if(LocalGameRepository.CheckDeal(deal, selectedStoreId, SelectedComparisonOperator, SelectedComparisonType, GivenToCompareNumber))
+
+                if (_useApi && LocalGameRepository.CheckDeal(deal, selectedStoreId, SelectedComparisonOperator, SelectedComparisonType, GivenToCompareNumber))
+                    showingDeals.Add(deal);
+                else if (!_useApi && ApiGameRepository.CheckDeal(deal, selectedStoreId, SelectedComparisonOperator, SelectedComparisonType, GivenToCompareNumber))
                     showingDeals.Add(deal);
             }
 

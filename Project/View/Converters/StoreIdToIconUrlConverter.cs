@@ -1,4 +1,5 @@
-﻿using Project.Repository;
+﻿using Project.Model;
+using Project.Repository;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -11,11 +12,20 @@ namespace Project.View.Converters
 {
     public class StoreIdToIconUrlConverter : IValueConverter
     {
+        private readonly bool _useApi = true;
+        private APIGameRepository ApiGameRepository { get; set; }
+        private List<Store> Stores { get; set; }
+
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
+            if (ApiGameRepository == null)
+                ApiGameRepository = new APIGameRepository();
+
             string id = value.ToString();
-            var stores = LocalGameRepository.GetStores();
-            foreach (var store in stores)
+
+            GetStores();
+
+            foreach (var store in Stores)
             {
                 if (store.Id == id)
                     return store.BannerUrl;
@@ -27,6 +37,14 @@ namespace Project.View.Converters
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
         {
             throw new NotImplementedException();
+        }
+
+        private async void GetStores()
+        {
+            if (_useApi)
+                Stores = await ApiGameRepository.GetStores();
+            else
+                Stores = LocalGameRepository.GetStores();
         }
     }
 }
