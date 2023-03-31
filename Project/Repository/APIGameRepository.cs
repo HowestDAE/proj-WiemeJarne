@@ -253,7 +253,10 @@ namespace Project.Repository
 
                     string result = JsonConvert.DeserializeObject<string>(json);
 
-                    MessageBox.Show($"price alert set succeeded you will receive an email from no-reply@cheapshark.com when the price drops below {price} USD", "Info", MessageBoxButton.OK, MessageBoxImage.Information);
+                    if(result.Equals("true"))
+                        MessageBox.Show($"price alert set succeeded you will receive an email from no-reply@cheapshark.com when the price drops below {price} USD", "Info", MessageBoxButton.OK, MessageBoxImage.Information);
+                    else if(result.Equals("false"))
+                        MessageBox.Show("Failed set alert please enter a valid e-mail address", "ERROR", MessageBoxButton.OK, MessageBoxImage.Error);
                 }
                 catch (HttpRequestException)
                 {
@@ -279,11 +282,14 @@ namespace Project.Repository
 
                     string result = JsonConvert.DeserializeObject<string>(json);
 
-                    MessageBox.Show($"price alert delete succeeded you will no longer receive emails for this game", "Info", MessageBoxButton.OK, MessageBoxImage.Information);
+                    if(result.Equals("true"))
+                        MessageBox.Show($"price alert delete succeeded you will no longer receive emails for this game", "Info", MessageBoxButton.OK, MessageBoxImage.Information);
+                    else if(result.Equals("false"))
+                        MessageBox.Show("Failed delete alert please enter a valid e-mail address and price", "ERROR", MessageBoxButton.OK, MessageBoxImage.Error);
                 }
                 catch (HttpRequestException)
                 {
-                    MessageBox.Show("Failed delete alert please enter a valid e-mail address", "ERROR", MessageBoxButton.OK, MessageBoxImage.Error);
+                    MessageBox.Show("Failed delete alert please enter a valid e-mail address or an e-mail address with alerts", "ERROR", MessageBoxButton.OK, MessageBoxImage.Error);
                 }
             }
         }
