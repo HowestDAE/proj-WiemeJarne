@@ -95,7 +95,7 @@
         <Viewbox Grid.Row="1">
             <!--when this button is clicked an there is a deal selected then the default browser will open en go the deal-->
             <Button Command="{Binding BrowseToSelectedDealCommand}" HorizontalAlignment="Center" Margin="30, 0, 30, 0" Background="#414855" BorderBrush="#b0b8c5">
-                <TextBlock Text="browse to selected deal" Margin="5,0,5,0" Foreground="#b0b8c5"/>
+                <TextBlock Text="browse to selected deal" Margin="5,0,5,0" Foreground="#b0b8c5" FontSize="10"/>
             </Button>
         </Viewbox>
 
@@ -127,14 +127,14 @@
             <Viewbox Grid.Row="2" VerticalAlignment="Bottom" HorizontalAlignment="Center">
                 <!--when this button is clicked an alert will be will be set for the entered email address (if that email is valid) and for the to reach price-->
                 <Button Command="{Binding SetPriceAlertCommand}" Margin="2" Background="#414855" BorderBrush="#b0b8c5">
-                    <TextBlock Text="set price alert" Margin="5,0,5,0" Foreground="#b0b8c5" FontSize="5"/>
+                    <TextBlock Text="set price alert" Margin="5,0,5,0" Foreground="#b0b8c5" FontSize="10"/>
                 </Button>
             </Viewbox>
 
             <Viewbox Grid.Row="3" VerticalAlignment="Bottom" HorizontalAlignment="Center">
                 <!--when this button is clicked an alert will be will be set for the entered email address (if that email is valid) and for the to reach price-->
                 <Button Command="{Binding DeletePriceAlertCommand}" Margin="2" Background="#414855" BorderBrush="#b0b8c5">
-                    <TextBlock Text="delete price alert" Margin="5,0,5,0" Foreground="#b0b8c5" FontSize="5"/>
+                    <TextBlock Text="delete price alert" Margin="5,0,5,0" Foreground="#b0b8c5" FontSize="10"/>
                 </Button>
             </Viewbox>
         </Grid>
