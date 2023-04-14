@@ -1,13 +1,8 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Project.Model;
-using Project.Repository;
 using Project.View;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Project.View.Converters;
 using System.Windows;
 using System.Windows.Controls;
 
@@ -15,6 +10,9 @@ namespace Project.ViewModel
 {
     public class MainViewModel : ObservableObject
     {
+        private bool UseAPI { get; set; } = true;
+
+        //determines what the text is of a button
         public string CommandText
         {
             get
@@ -26,9 +24,6 @@ namespace Project.ViewModel
             }
         }
 
-        public RelayCommand SwitchPageCommand { get; private set; }
-        public RelayCommand SearchDealsCommand { get; private set; }
-
         public Page CurrentPage { get; set; }
 
         public OverviewPage OverviewPage { get; }
@@ -37,13 +32,21 @@ namespace Project.ViewModel
         public DetailPage DetailPage { get; }
         = new DetailPage();
 
+        //the visibility for the search button the button should only be visible when the OverViewPage is the CurrentPage
         public Visibility IsSearchButtonVisible { get; set; } = Visibility.Visible;
+
+        public RelayCommand SwitchPageCommand { get; private set; }
+        public RelayCommand SearchDealsCommand { get; private set; }
 
         public MainViewModel()
         {
             CurrentPage = OverviewPage;
             SwitchPageCommand = new RelayCommand(SwitchPage);
             SearchDealsCommand = new RelayCommand(SearchDeals);
+
+            (OverviewPage.DataContext as OverviewVM).UseAPI = UseAPI;
+            (DetailPage.DataContext as DetailVM).UseAPI = UseAPI;
+            StoreIdToBannerUrlConverter.UseAPI = UseAPI;
         }
 
         public void SwitchPage()
@@ -84,6 +87,7 @@ namespace Project.ViewModel
             OnPropertyChanged(nameof(IsSearchButtonVisible));
         }
 
+        //this function is called when the search button is pressed
         public void SearchDeals()
         {
             if (CurrentPage is OverviewPage)

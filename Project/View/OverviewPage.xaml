@@ -15,56 +15,46 @@
 
     <Grid Background="#24282f">
         <Grid.RowDefinitions>
-            <RowDefinition />
-            <RowDefinition Height="auto"/>
+            <RowDefinition Height="0.05*"/>
+            <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition />
-            <ColumnDefinition />
-        </Grid.ColumnDefinitions>            
-        
-        <!--a ComboBox to filter the store when this is set to a ceratain store only games that have a deal will show and when the game is clicked only the deal at that store is shown-->
-        <ComboBox VerticalAlignment="Top" ItemsSource="{Binding Stores}" SelectedItem="{Binding SelectedStore}">
-            <ComboBox.ItemTemplate>
-                <DataTemplate>
-                    <StackPanel Orientation="Horizontal">
-                        <Image Source="{Binding IconUrl}" Height="15" Width="15"/>
-                        <TextBlock Text="{Binding Name}" Margin="5,0,0,0"/>
-                    </StackPanel>
-                </DataTemplate>
-            </ComboBox.ItemTemplate>
-        </ComboBox>
-        
-        <!--split up the right column in 2. first column for a load more games button and the second column for price/percentage filters-->
-        <Grid Background="#24282f" Grid.Column="1" Grid.Row="0">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition />
-                <ColumnDefinition />
-            </Grid.ColumnDefinitions>
+        <!--a viewbox to scale the stackpanel with the filters and the load more button with the window size-->
+        <Viewbox Grid.Row="0" HorizontalAlignment="Center" VerticalAlignment="Top" MaxHeight="50">
+            <!--a stack panel for the filters and the load more games button-->
+            <StackPanel Orientation="Horizontal">
+                <!--a ComboBox to filter the store when this is set to a ceratain store only games that have a deal will show and when the game is clicked only the deal at that store is shown-->
+                <ComboBox  HorizontalAlignment="Center" VerticalAlignment="Top" ItemsSource="{Binding Stores}" SelectedItem="{Binding SelectedStore}" Margin="5,0">
+                    <ComboBox.ItemTemplate>
+                        <DataTemplate>
+                            <StackPanel Orientation="Horizontal">
+                                <Image Source="{Binding IconUrl}" Height="15" Width="15"/>
+                                <TextBlock Text="{Binding Name}" Margin="5,0,0,0"/>
+                            </StackPanel>
+                        </DataTemplate>
+                    </ComboBox.ItemTemplate>
+                </ComboBox>
 
-            <Button Command="{Binding LoadGamesCommand}" Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Top" Background="#414855" Margin="0,2,0,0">
-                <TextBlock Text="load more games" Margin="5,0,5,0" Foreground="#b0b8c5"/>
-            </Button>
+                <Button Command="{Binding LoadGamesCommand}" HorizontalAlignment="Center" VerticalAlignment="Top" Background="#414855" Margin="5,1">
+                    <TextBlock Text="load more games" Margin="5,0" Foreground="#b0b8c5"/>
+                </Button>
 
-            <!--a StackPanel to have the ComboBox for the ComparisonOperators, the TextBox for the user to put in a number and the ComboBox for the ComparisonType to be next to each other-->
-            <StackPanel Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Center">
                 <!--a ComboBox with the ComparisonOperators in it-->
-                <ComboBox VerticalAlignment="Top" ItemsSource="{Binding ComparisonOperators}" SelectedItem="{Binding SelectedComparisonOperator}"/>
-                
+                <ComboBox VerticalAlignment="Top" ItemsSource="{Binding ComparisonOperators}" SelectedItem="{Binding SelectedComparisonOperator}" Margin="5,0"/>
+
                 <!--a border to have rounded corners on around the TextBox-->
-                <Border Background="#414855" CornerRadius="5" VerticalAlignment="Top" Margin="0,2,0,0">
+                <Border Background="#414855" CornerRadius="5" VerticalAlignment="Top" Margin="5,2">
                     <!--a textbox where the user can type in a number to filter the price or sale percentage depending on what the next ComboBox is set to. the StringFormat for the text is set to show 2 decimals-->
                     <TextBox TextAlignment="Center" Text="{Binding GivenToCompareNumber, StringFormat={}{0:F2}}" Foreground="#b0b8c5" Background="Transparent" BorderBrush="Transparent"/>
                 </Border>
 
                 <!--a ComboBox with the ComparisonTypes in it-->
-                <ComboBox Grid.Column="1" VerticalAlignment="Top" HorizontalAlignment="Right" ItemsSource="{Binding Types}" SelectedItem="{Binding SelectedComparisonType}"/>
+                <ComboBox Grid.Column="1" VerticalAlignment="Top" HorizontalAlignment="Right" ItemsSource="{Binding ComparisonTypes}" SelectedItem="{Binding SelectedComparisonType}" Margin="5,0"/>
             </StackPanel>
-        </Grid>
-        
+        </Viewbox>
+
         <!--a ListBox that show all the filtered games-->
-        <ListBox Grid.ColumnSpan="2" ItemsSource="{Binding Games}" ScrollViewer.HorizontalScrollBarVisibility="Disabled"  Background="#24282f" SelectedItem="{Binding SelectedGame}" HorizontalAlignment="Center" BorderBrush="Transparent" Margin="0,25,0,25">
+        <ListBox Grid.Row="1" ItemsSource="{Binding Games}" ScrollViewer.HorizontalScrollBarVisibility="Disabled" Background="#24282f" SelectedItem="{Binding SelectedGame}" HorizontalAlignment="Center" BorderBrush="Transparent">
             <ListBox.ItemsPanel>
                 <ItemsPanelTemplate>
                     <WrapPanel Orientation="Horizontal" Width="auto"/>
@@ -72,16 +62,20 @@
             </ListBox.ItemsPanel>
             <ListBox.ItemTemplate>
                 <DataTemplate>
-                    <Grid Width="175" Height="175">
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="2*"/>
-                            <RowDefinition Height="50"/>
-                            <RowDefinition Height="*"/>
-                        </Grid.RowDefinitions>
-                        <Border Background="#414855" CornerRadius="5" Grid.RowSpan="3"/>
-                        <TextBlock Grid.Row="0" Text="{Binding Title}" TextWrapping="Wrap" Width="100" Foreground="#b0b8c5" VerticalAlignment="Center" TextAlignment="Center" FontWeight="DemiBold" FontSize="15"/>
-                        <Image Grid.Row="1" Source="{Binding ImageUrl}" Stretch="Uniform" Margin="10,0,10,0"/>
-                    </Grid>
+                    <Border Background="#414855" CornerRadius="10" Margin="1">
+                        <Grid Width="175" Height="175">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="*" />
+                                <RowDefinition Height="3*" />
+                            </Grid.RowDefinitions>
+
+                            <!--title of the game-->
+                            <TextBlock Grid.Row="0" Text="{Binding Title}" TextWrapping="Wrap" Foreground="#b0b8c5" VerticalAlignment="Center" TextAlignment="Center" FontWeight="DemiBold" FontSize="15" Margin="5,0,5,0"/>
+                            
+                            <!--image of the game-->
+                            <Image Grid.Row="1" Source="{Binding ImageUrl}" Stretch="Uniform" Margin="10,0,10,10" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Grid>
+                    </Border>
                 </DataTemplate>
             </ListBox.ItemTemplate>
         </ListBox>

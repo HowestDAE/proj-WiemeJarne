@@ -2,24 +2,26 @@
 using CommunityToolkit.Mvvm.Input;
 using Project.Model;
 using Project.Repository;
-using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
-using System.Runtime.InteropServices;
-using System.Security.Permissions;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Input;
 
 namespace Project.ViewModel
 {
     public class DetailVM : ObservableObject
     {
-        private readonly bool _useApi = true;
-
         private APIGameRepository ApiGameRepository { get; set; }
+
+        private bool _useAPI;
+        public bool UseAPI
+        {
+            get { return _useAPI; }
+            set
+            {
+                _useAPI = value;
+                Initialize();
+            }
+        }
 
         private Game _currentGame;
         public Game CurrentGame
@@ -54,20 +56,6 @@ namespace Project.ViewModel
             }
         }
 
-        public RelayCommand BrowseToSelectedDealCommand { get; private set; }
-        public RelayCommand SetPriceAlertCommand { get; private set; }
-        public RelayCommand DeletePriceAlertCommand { get; private set; }
-
-        private Deal _selectedDeal;
-        public Deal SelectedDeal
-        {
-            get { return _selectedDeal; }
-            set
-            {
-                _selectedDeal = value;
-            }
-        }
-
         public List<Store> Stores { get; private set; }
 
         private Store _selectedStore;
@@ -81,35 +69,35 @@ namespace Project.ViewModel
             }
         }
 
-        private string selectedComparisonOperator;
+        private string _selectedComparisonOperator;
         public string SelectedComparisonOperator
         {
-            get { return selectedComparisonOperator; }
+            get { return _selectedComparisonOperator; }
             set
             {
-                selectedComparisonOperator = value;
+                _selectedComparisonOperator = value;
                 CalculateShowingDeals();
             }
         }
 
-        private string selectedComparisonType;
+        private string _selectedComparisonType;
         public string SelectedComparisonType
         {
-            get { return selectedComparisonType; }
+            get { return _selectedComparisonType; }
             set
             {
-                selectedComparisonType = value;
+                _selectedComparisonType = value;
                 CalculateShowingDeals();
             }
         }
 
-        private float givenToCompareNumber;
+        private float _givenToCompareNumber;
         public float GivenToCompareNumber
         {
-            get { return givenToCompareNumber; }
+            get { return _givenToCompareNumber; }
             set
             {
-                givenToCompareNumber = value;
+                _givenToCompareNumber = value;
                 CalculateShowingDeals();
             }
         }
@@ -124,12 +112,23 @@ namespace Project.ViewModel
                 OnPropertyChanged(nameof(ShowingDeals));
             }
         }
+
+        public Deal SelectedDeal { get; set; }
+
+        public RelayCommand BrowseToSelectedDealCommand { get; private set; }
+        public RelayCommand SetPriceAlertCommand { get; private set; }
+        public RelayCommand DeletePriceAlertCommand { get; private set; }
+
         public DetailVM()
         {
             BrowseToSelectedDealCommand = new RelayCommand(BrowseToSelectedDeal);
             SetPriceAlertCommand = new RelayCommand(SetPriceAlert);
             DeletePriceAlertCommand = new RelayCommand(DeletePriceAlert);
-            if(_useApi)
+        }
+
+        private void Initialize()
+        {            
+            if (UseAPI)
             {
                 ApiGameRepository = new APIGameRepository();
                 LoadStores();
@@ -142,14 +141,16 @@ namespace Project.ViewModel
 
         private async void LoadStores()
         {
-            Stores = await ApiGameRepository.GetStores();
+            Stores = await ApiGameRepository.GetStoresAsync();
         }
 
+        //looks at all the deals of the current game and makes sure only the deals that comply to the filters are visible
         public void CalculateShowingDeals()
         {
             List<Deal> showingDeals = new List<Deal>();
             //determine the store index of the SelectedStoreName
             string selectedStoreId = "";
+
             foreach (var store in Stores)
             {
                 if (store.Name.Equals(SelectedStore.Name))
@@ -160,30 +161,39 @@ namespace Project.ViewModel
             }
 
             if (SelectedComparisonOperator == null) return;
-            if(SelectedComparisonType == null) return;
-            if(CurrentGame == null) return;
+            if (SelectedComparisonType == null) return;
+            if (CurrentGame == null) return;
 
             foreach (var deal in CurrentGame.Deals)
             {
 
-                if (_useApi && LocalGameRepository.CheckDeal(deal, selectedStoreId, SelectedComparisonOperator, SelectedComparisonType, GivenToCompareNumber))
+                if (!UseAPI && LocalGameRepository.CheckDeal(deal, selectedStoreId, SelectedComparisonOperator, SelectedComparisonType, GivenToCompareNumber))
                     showingDeals.Add(deal);
-                else if (!_useApi && ApiGameRepository.CheckDeal(deal, selectedStoreId, SelectedComparisonOperator, SelectedComparisonType, GivenToCompareNumber))
+                else if (UseAPI && ApiGameRepository.CheckDeal(deal, selectedStoreId, SelectedComparisonOperator, SelectedComparisonType, GivenToCompareNumber))
                     showingDeals.Add(deal);
             }
 
             ShowingDeals = showingDeals;
         }
 
+        //Opens the default browser and browses to the SelectedDeal this only works when the api is in use when it is not in use an error window will be shown
         public void BrowseToSelectedDeal()
         {
+            if (SelectedDeal == null)
+            {
+                MessageBox.Show($"please select a deal", "ERROR", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
+
             string url = $"https://www.cheapshark.com/redirect?dealID={SelectedDeal.DealId}";
+
             Process.Start(url);
         }
 
-        public async void SetPriceAlert() //this function only work when the api is in use
+        //this function only work when the api is in use
+        public async void SetPriceAlert()
         {
-            if(!_useApi)
+            if (!UseAPI)
                 MessageBox.Show("Failed set alert this feature is only available when using the api", "ERROR", MessageBoxButton.OK, MessageBoxImage.Error);
             else
             {
@@ -191,9 +201,10 @@ namespace Project.ViewModel
             }
         }
 
-        public async void DeletePriceAlert() //this function only works when the api is in use
+        //this function only work when the api is in use
+        public async void DeletePriceAlert()
         {
-            if (!_useApi)
+            if (!UseAPI)
                 MessageBox.Show("Failed delete alert this feature is only available when using the api", "ERROR", MessageBoxButton.OK, MessageBoxImage.Error);
             else
             {

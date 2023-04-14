@@ -1,9 +1,4 @@
 ﻿using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Project.Model
 {
@@ -17,9 +12,6 @@ namespace Project.Model
 
         [JsonProperty(PropertyName = "banner")]
         public string BannerUrl { get; set; }
-
-        [JsonProperty(PropertyName = "logo")]
-        public string LogoUrl { get; set; }
 
         [JsonProperty(PropertyName = "icon")]
         public string IconUrl { get; set; }

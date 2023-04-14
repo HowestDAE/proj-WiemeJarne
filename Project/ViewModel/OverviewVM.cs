@@ -2,17 +2,26 @@
 using CommunityToolkit.Mvvm.Input;
 using Project.Model;
 using Project.Repository;
-using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Windows;
 
 namespace Project.ViewModel
 {
     public class OverviewVM : ObservableObject
     {
-        private readonly bool _useApi = true;
-
         private APIGameRepository ApiGameRepository { get; set; }
+
+        private bool _useAPI;
+        public bool UseAPI
+        {
+            get { return _useAPI; }
+            set
+            {
+                _useAPI = value;
+                Initialize();
+            }
+        }
 
         private List<Game> _games;
         public List<Game> Games
@@ -73,25 +82,25 @@ namespace Project.ViewModel
             }
         }
 
-        public List<string> Types { get; private set; }
+        public List<string> ComparisonTypes { get; private set; }
             = new List<string>()
             {
                 "USD",
                 "%"
             };
 
-        private string _selectedType;
-
+        private string _selectedComparisionType;
         public string SelectedComparisonType
         {
-            get { return _selectedType; }
+            get { return _selectedComparisionType; }
             set
             {
-                _selectedType = value;
+                _selectedComparisionType = value;
                 OnPropertyChanged(nameof(SelectedComparisonType));
             }
         }
 
+        //this number is given by the user in a TextBox
         private float givenToCompareNumber;
         public float GivenToCompareNumber
         {
@@ -107,7 +116,12 @@ namespace Project.ViewModel
 
         public OverviewVM()
         {
-            if (_useApi)
+            LoadGamesCommand = new RelayCommand(Load100Games);
+        }
+
+        private void Initialize()
+        {
+            if (UseAPI)
             {
                 ApiGameRepository = new APIGameRepository();
 
@@ -118,9 +132,12 @@ namespace Project.ViewModel
             {
                 Games = LocalGameRepository.GetGames();
                 Stores = LocalGameRepository.GetStores();
+                Stores.Add(new Store() { Name = "<all stores>", Id = "" });
+                SelectedStore = Stores.Last();
+                SelectedComparisonOperator = ComparisonOperators[0];
+                SelectedComparisonType = ComparisonTypes[0];
+                GivenToCompareNumber = 0.00f;
             }
-
-            LoadGamesCommand = new RelayCommand(Load100Games);
         }
 
         private async void LoadGames(int minAmount)
@@ -130,23 +147,30 @@ namespace Project.ViewModel
 
         private async void Load100Games()
         {
+            if(!UseAPI)
+            {
+                MessageBox.Show("Failed to load more games this feature is only available when using the api", "ERROR", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
+
             Games = await ApiGameRepository.LoadGamesAsync(100);
             UpdateGames();
         }
 
         private async void LoadStores()
         {
-            Stores = await ApiGameRepository.GetStores();
+            Stores = await ApiGameRepository.GetStoresAsync();
             Stores.Add(new Store() { Name = "<all stores>", Id = "" });
             SelectedStore = Stores.Last();
             SelectedComparisonOperator = ComparisonOperators[0];
-            SelectedComparisonType = Types[0];
+            SelectedComparisonType = ComparisonTypes[0];
             GivenToCompareNumber = 0.00f;
         }
 
+        //makes sure that only the games that comply to the filters are shown
         public async void UpdateGames()
         {
-            if (_useApi)
+            if (UseAPI)
                 Games = await ApiGameRepository.GetGamesAsync(SelectedStore.Name, SelectedComparisonOperator, SelectedComparisonType, GivenToCompareNumber);
             else
                 Games = LocalGameRepository.GetGames(SelectedStore.Name, SelectedComparisonOperator, SelectedComparisonType, GivenToCompareNumber);

@@ -10,9 +10,10 @@ using System.Windows.Data;
 
 namespace Project.View.Converters
 {
-    public class StoreIdToIconUrlConverter : IValueConverter
+    public class StoreIdToBannerUrlConverter : IValueConverter
     {
-        private readonly bool _useApi = true;
+        public static bool UseAPI { get; set; }
+
         private APIGameRepository ApiGameRepository { get; set; }
         private List<Store> Stores { get; set; }
 
@@ -41,8 +42,8 @@ namespace Project.View.Converters
 
         private async void GetStores()
         {
-            if (_useApi)
-                Stores = await ApiGameRepository.GetStores();
+            if (UseAPI)
+                Stores = await ApiGameRepository.GetStoresAsync();
             else
                 Stores = LocalGameRepository.GetStores();
         }

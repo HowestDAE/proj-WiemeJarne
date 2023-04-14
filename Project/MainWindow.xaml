@@ -11,8 +11,27 @@
         <viewModel:MainViewModel/>
     </Window.DataContext>
     <Grid>
-        <Frame NavigationUIVisibility="Hidden" Content="{Binding CurrentPage}"/>
-        <Button Visibility="{Binding IsSearchButtonVisible}" Margin="0,1,2,0" Command="{Binding SearchDealsCommand}" VerticalAlignment="Top" HorizontalAlignment="Right" Height="20" Content="Search" Foreground="#b0b8c5" Background="#414855" BorderBrush="#b0b8c5"/>
-        <Button VerticalAlignment="Bottom" Command="{Binding SwitchPageCommand}" Content="{Binding CommandText}" Foreground="#b0b8c5" Background="#414855" BorderBrush="#b0b8c5"/>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="0.05*"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <Frame Grid.RowSpan="2" NavigationUIVisibility="Hidden" Content="{Binding CurrentPage}"/>
+
+        <!--a Viewbox to scale the StackPanel with buttons in it-->
+        <Viewbox MaxHeight="50" Grid.Row="0" HorizontalAlignment="Right">
+            <!--a StackPanel with the search button and the show deals/back button-->
+            <StackPanel Orientation="Horizontal" Height="auto" Width="auto">
+                <!--search button-->
+                <Button Height="auto" Width="auto" Visibility="{Binding IsSearchButtonVisible}" Command="{Binding SearchDealsCommand}" Background="#414855" BorderBrush="#b0b8c5" Margin="5,0">
+                    <TextBlock Text="SEARCH" Margin="5,0" Foreground="#b0b8c5"/>
+                </Button>
+
+                <!--show deals/back button-->
+                <Button Height="auto" Width="auto" Command="{Binding SwitchPageCommand}" Background="#414855" BorderBrush="#b0b8c5" Margin="5,0">
+                    <TextBlock Text="{Binding CommandText}" Margin="5,0" Foreground="#b0b8c5"/>
+                </Button>
+            </StackPanel>
+        </Viewbox>
     </Grid>
 </Window>
