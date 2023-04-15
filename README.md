@@ -1,3 +1,6 @@
 # proj-WiemeJarne
-In this project, I have developed an application that utilizes the CheapShark API to gather information on games. I chose this particular API as it contains comprehensive data regarding game sales across various stores. Additionally, the API allows users to set alerts for when a game reaches a specific price or drops below it, triggering an email notification. 
-To switch between the API and local files go to the MainViewModel.cs file (this file is located in the ViewModel folder) then change the UseAPI property to true to use the API or to false to use local files.
+I have developed an application that utilizes the CheapShark API to collect extensive information about games and their sales across various stores. The API also enables users to set up alerts for when a game reaches a specific price or falls below it, triggering an email notification. I chose this API for its comprehensive and up-to-date data.
+
+To switch between using the API and local files, go to the MainViewModel.cs file, located in the ViewModel folder. Change the UseAPI property to true to use the API or false to use local files.
+
+The "load more games" button at the end of the game list loads in over 100 games. Although the games are loaded in per 25 IDs, not all IDs are used, resulting in slightly more than 100 games being loaded.
