@@ -94,8 +94,19 @@
         <!-- ViewBox so the button inside it sizes according to the window size-->
         <Viewbox Grid.Row="1">
             <!--when this button is clicked an there is a deal selected then the default browser will open en go the deal-->
-            <Button Command="{Binding BrowseToSelectedDealCommand}" HorizontalAlignment="Center" Margin="30, 0, 30, 0" Background="#414855" BorderBrush="#b0b8c5">
-                <TextBlock Text="browse to selected deal" Margin="5,0,5,0" Foreground="#b0b8c5" FontSize="10"/>
+            <Button Command="{Binding BrowseToSelectedDealCommand}" HorizontalAlignment="Center" Margin="30,0" Background="#414855" BorderBrush="#b0b8c5">
+                <Button.Template>
+                    <ControlTemplate TargetType="Button">
+                        <Border x:Name="border" Background="#414855" BorderBrush="#b0b8c5" BorderThickness="1" CornerRadius="5">
+                            <TextBlock Text="browse to selected deal" Margin="5,2" Foreground="#b0b8c5" TextAlignment="Center" FontSize="10"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="border" Property="Background" Value="#80b0b8c5"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Button.Template>
             </Button>
         </Viewbox>
 
@@ -110,7 +121,7 @@
             <!-- ViewBox so the button inside it sizes according to the window size-->
             <Viewbox Grid.Row="0" VerticalAlignment="Top" HorizontalAlignment="Center">
                 <!--Border so the TextBox has rounded corners-->
-                <Border Background="#414855" CornerRadius="5" Margin="2">
+                <Border Background="#414855" CornerRadius="5" Margin="2" BorderBrush="#b0b8c5" BorderThickness="1">
                     <TextBox VerticalAlignment="Top" Text="{Binding UserEmail, FallbackValue=(enter email here)}" Foreground="#b0b8c5" Background="Transparent" BorderBrush="Transparent" Margin="3" FontSize="10"/>
                 </Border>
             </Viewbox>
@@ -118,7 +129,7 @@
             <!-- ViewBox so the button inside it sizes according to the window size-->
             <Viewbox Grid.Row="1" VerticalAlignment="Center" HorizontalAlignment="Center">
                 <!--Border so the TextBox has rounded corners-->
-                <Border Background="#414855" CornerRadius="5" Margin="2">
+                <Border Background="#414855" CornerRadius="5" Margin="2" BorderBrush="#b0b8c5" BorderThickness="1">
                     <TextBox VerticalAlignment="Top" Text="{Binding PriceToReach, FallbackValue=(enter price to reach here)}" Foreground="#b0b8c5" Background="Transparent" BorderBrush="Transparent" Margin="3" FontSize="10"/>
                 </Border>
             </Viewbox>
@@ -126,15 +137,37 @@
             <!-- ViewBox so the button inside it sizes according to the window size-->
             <Viewbox Grid.Row="2" VerticalAlignment="Bottom" HorizontalAlignment="Center">
                 <!--when this button is clicked an alert will be will be set for the entered email address (if that email is valid) and for the to reach price-->
-                <Button Command="{Binding SetPriceAlertCommand}" Margin="2" Background="#414855" BorderBrush="#b0b8c5">
-                    <TextBlock Text="set price alert" Margin="5,0,5,0" Foreground="#b0b8c5" FontSize="10"/>
+                <Button Command="{Binding SetPriceAlertCommand}" HorizontalAlignment="Center" Margin="2" Background="#414855" BorderBrush="#b0b8c5">
+                    <Button.Template>
+                        <ControlTemplate TargetType="Button">
+                            <Border x:Name="border" Background="#414855" BorderBrush="#b0b8c5" BorderThickness="1" CornerRadius="5">
+                                <TextBlock Text="set price alert" Margin="5,2" Foreground="#b0b8c5" TextAlignment="Center" FontSize="10"/>
+                            </Border>
+                            <ControlTemplate.Triggers>
+                                <Trigger Property="IsMouseOver" Value="True">
+                                    <Setter TargetName="border" Property="Background" Value="#80b0b8c5"/>
+                                </Trigger>
+                            </ControlTemplate.Triggers>
+                        </ControlTemplate>
+                    </Button.Template>
                 </Button>
             </Viewbox>
 
             <Viewbox Grid.Row="3" VerticalAlignment="Bottom" HorizontalAlignment="Center">
                 <!--when this button is clicked an alert will be will be set for the entered email address (if that email is valid) and for the to reach price-->
-                <Button Command="{Binding DeletePriceAlertCommand}" Margin="2" Background="#414855" BorderBrush="#b0b8c5">
-                    <TextBlock Text="delete price alert" Margin="5,0,5,0" Foreground="#b0b8c5" FontSize="10"/>
+                <Button Command="{Binding DeletePriceAlertCommand}" HorizontalAlignment="Center" Margin="2" Background="#414855" BorderBrush="#b0b8c5">
+                    <Button.Template>
+                        <ControlTemplate TargetType="Button">
+                            <Border x:Name="border" Background="#414855" BorderBrush="#b0b8c5" BorderThickness="1" CornerRadius="5">
+                                <TextBlock Text="delete price alert" Margin="5,2" Foreground="#b0b8c5" TextAlignment="Center" FontSize="10"/>
+                            </Border>
+                            <ControlTemplate.Triggers>
+                                <Trigger Property="IsMouseOver" Value="True">
+                                    <Setter TargetName="border" Property="Background" Value="#80b0b8c5"/>
+                                </Trigger>
+                            </ControlTemplate.Triggers>
+                        </ControlTemplate>
+                    </Button.Template>
                 </Button>
             </Viewbox>
         </Grid>

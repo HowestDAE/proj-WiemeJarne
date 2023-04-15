@@ -42,6 +42,9 @@ namespace Project.View.Converters
 
         private async void GetStores()
         {
+            if (Stores != null)
+                return;
+
             if (UseAPI)
                 Stores = await ApiGameRepository.GetStoresAsync();
             else

@@ -18,9 +18,9 @@ namespace Project.ViewModel
             get
             {
                 if (CurrentPage is OverviewPage)
-                    return "SHOW DEALS";
+                    return "show deals";
 
-                return "BACK";
+                return "back";
             }
         }
 

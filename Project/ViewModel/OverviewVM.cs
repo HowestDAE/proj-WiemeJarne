@@ -153,7 +153,7 @@ namespace Project.ViewModel
                 return;
             }
 
-            Games = await ApiGameRepository.LoadGamesAsync(100);
+            Games = await ApiGameRepository.LoadGamesAsync(100).ConfigureAwait(false);
             UpdateGames();
         }
 

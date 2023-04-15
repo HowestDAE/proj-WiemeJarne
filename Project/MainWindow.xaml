@@ -23,13 +23,35 @@
             <!--a StackPanel with the search button and the show deals/back button-->
             <StackPanel Orientation="Horizontal" Height="auto" Width="auto">
                 <!--search button-->
-                <Button Height="auto" Width="auto" Visibility="{Binding IsSearchButtonVisible}" Command="{Binding SearchDealsCommand}" Background="#414855" BorderBrush="#b0b8c5" Margin="5,0">
-                    <TextBlock Text="SEARCH" Margin="5,0" Foreground="#b0b8c5"/>
+                <Button Visibility="{Binding IsSearchButtonVisible}" Command="{Binding SearchDealsCommand}" Background="#414855" Margin="5">
+                    <Button.Template>
+                        <ControlTemplate TargetType="Button">
+                            <Border x:Name="border" Background="#414855" BorderBrush="#b0b8c5" BorderThickness="2" CornerRadius="10">
+                                <TextBlock Text="search" Margin="5,2" Foreground="#b0b8c5" TextAlignment="Center" FontSize="20"/>
+                            </Border>
+                            <ControlTemplate.Triggers>
+                                <Trigger Property="IsMouseOver" Value="True">
+                                    <Setter TargetName="border" Property="Background" Value="#80b0b8c5"/>
+                                </Trigger>
+                            </ControlTemplate.Triggers>
+                        </ControlTemplate>
+                    </Button.Template>
                 </Button>
 
                 <!--show deals/back button-->
-                <Button Height="auto" Width="auto" Command="{Binding SwitchPageCommand}" Background="#414855" BorderBrush="#b0b8c5" Margin="5,0">
-                    <TextBlock Text="{Binding CommandText}" Margin="5,0" Foreground="#b0b8c5"/>
+                <Button Command="{Binding SwitchPageCommand}" Background="#414855" Margin="5">
+                    <Button.Template>
+                        <ControlTemplate TargetType="Button">
+                            <Border x:Name="border" Background="#414855" BorderBrush="#b0b8c5" BorderThickness="2" CornerRadius="10">
+                                <TextBlock Text="{Binding CommandText}" Margin="5,2" Foreground="#b0b8c5" TextAlignment="Center" FontSize="20"/>
+                            </Border>
+                            <ControlTemplate.Triggers>
+                                <Trigger Property="IsMouseOver" Value="True">
+                                    <Setter TargetName="border" Property="Background" Value="#80b0b8c5"/>
+                                </Trigger>
+                            </ControlTemplate.Triggers>
+                        </ControlTemplate>
+                    </Button.Template>
                 </Button>
             </StackPanel>
         </Viewbox>
